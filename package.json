@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy:docs": "rm -rf docs && pnpm build && git add docs -A && git commit -m 'GitHub Pages deployment' && git push",
     "lint": "eslint .",
     "preview": "vite preview"
   },
