@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ProductList.css";
 import ProductCard from "./ProductCard";
-
+import Spinner from "../../components/spinner";
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,10 +24,9 @@ function ProductList() {
   }, []);
 
   return (
-
     <main>
       <h1>Our products</h1>
-      {loading && <p>Loading...</p>}
+      {loading && <Spinner />}
       {error && <p className="error">{error}</p>}
       {!loading && !error && (
         <div className="products-grid"> 
