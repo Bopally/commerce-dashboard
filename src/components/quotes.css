@@ -1,28 +1,27 @@
 .quote-container {
-    width: 100%;
-    max-width: 550px;
-    height: 250px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px #eee;
-    font-family: 'Georgia', serif;
-    text-align: center;
-  
-    display: grid;
-    place-items: center;
-  }
-  
-  .quote-text {
-    font-size: 1.5rem;
-    font-style: italic;
-    margin-bottom: 1rem;
-    max-width: 90%;
-  }
-  
-  .quote-author {
-    font-size: 1rem;
-    color: #555;
-  }
+  width: 100%;
+  max-width: 550px;
+  height: 250px;
+  margin: var(--spacing-xl) auto;
+  padding: var(--spacing-lg);
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  font-family: 'Georgia', serif;
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
+
+.quote-text {
+  font-size: 24px;        /* was 1.5rem */
+  font-style: italic;
+  margin-bottom: var(--spacing-md);
+  max-width: 90%;
+}
+
+.quote-author {
+  font-size: 16px;        /* was 1rem */
+  color: var(--text-secondary);
+}

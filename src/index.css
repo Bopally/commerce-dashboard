@@ -1,0 +1,47 @@
+:root {
+  /* Main colors */
+  --background-color: #f9f9f9;
+  --primary-color: #333;
+  --secondary-color: #666;
+  --accent-color: #888;
+  --error-color: red;
+  
+  /* Border and shadow colors */
+  --border-color: #eee;
+  --shadow-color: #eee;
+  
+  /* Text colors */
+  --text-primary: #333;
+  --text-secondary: #666;
+  --text-muted: #888;
+  
+  /* Spacing in pixels */
+  --spacing-xs: 3px;      
+  --spacing-sm: 8px;      
+  --spacing-md: 16px;     
+  --spacing-lg: 24px;     
+  --spacing-xl: 32px;     
+  --spacing-xxl: 48px;    
+}
+
+main {
+  background: var(--background-color);
+  min-height: 100%;
+  padding-bottom: var(--spacing-xxl);
+}
+
+h1 {
+  text-align: center;
+  font-size: 32px;
+  margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+}
+
+/* html,
+body,
+#root,
+#root > div {
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}  */

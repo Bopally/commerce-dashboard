@@ -1,29 +1,17 @@
-main {
-    background: #f9f9f9;
-    min-height: 100vh;
-    padding-bottom: 3rem;
-  }
-  
-  h1 {
+.error {
+    color: var(--error-color);
     text-align: center;
-    font-size: 2rem;
-    margin: 2rem 0 1rem 0;
-  }
-  
-  .error {
-    color: red;
-    text-align: center;
-    margin-top: 2rem;
+    margin-top: var(--spacing-xl);
   }
 
   
   .product-card {
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     background: #fff;
-    box-shadow: 0 2px 8px #eee;
+    box-shadow: 0 2px 8px var(--shadow-color);
     overflow: hidden;
-    padding: 1rem;
+    padding: var(--spacing-md);
     text-align: center;
   }
   
@@ -34,8 +22,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f3f3f3;
-    margin-bottom: 1rem;
+    background: var(--background-color);
+    margin-bottom: var(--spacing-md);
     border-radius: 12px;
     
   }
@@ -49,14 +37,14 @@ main {
     position: absolute;
     width: 100%;
     background: rgba(255,255,255,0.97);
-    color: #333;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.8s;
-    padding: 1rem;
-    font-size: 0.95rem;
+    padding: var(--spacing-md);
+    font-size: 15px;
   }
   
   .image-hover-container:hover .description-hover {
@@ -65,21 +53,28 @@ main {
   }
   
   .product-title {
-    font-size: 1.15rem;
-    margin: 0.5rem 0 0.2rem 0;
+    font-size: 18px;
+    margin: var(--spacing-sm) 0 var(--spacing-xs) 0;
   }
   
   .product-price {
-    margin: 0.2rem 0;
+    margin: var(--spacing-xs) 0;
   }
   
   .product-rating {
-    margin: 0.2rem 0;
-    color: #888;
+    margin: var(--spacing-xs) 0;
+    color: var(--text-muted);
   }
   
   .product-category {
-    margin: 0.2rem 0;
+    margin: var(--spacing-xs) 0;
     font-style: italic;
-    color: #666;
+    color: var(--text-secondary);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
   }
