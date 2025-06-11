@@ -1,34 +1,36 @@
 // src/components/Quote.jsx
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import './quotes.css';
 import Spinner from './spinner';
+import { fetchData } from '../services/api.service';
 
 const Quote = () => {
   const [quote, setQuote] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchQuote = useCallback(async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('https://dummyjson.com/quotes/random');
-      const data = await res.json();
-      setQuote(data);
-    } catch (err) {
-      console.error('Error fetching quote:', err);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const data = await fetchData("quotes/random");
+        setQuote(data);
+      } catch (err) {
+        console.error('Error fetching quote:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchQuote();
   }, []);
 
-  useEffect(() => {
-    fetchQuote();
+  // useEffect(() => {
+  //   fetchQuote();
 
-    const intervalId = setInterval(() => {
-      fetchQuote();
-    }, 15000);
+  //   const intervalId = setInterval(() => {
+  //     fetchQuote();
+  //   }, 15000);
 
-    return () => clearInterval(intervalId); 
-  }, [fetchQuote]);
+  //   return () => clearInterval(intervalId); 
+  // }, [fetchQuote]);
 
   return (
     <div className="quote-container">

@@ -2,40 +2,42 @@ import React, { useEffect, useState } from "react";
 import "./ProductList.css";
 import ProductCard from "./ProductCard";
 import Spinner from "../../components/spinner";
-function ProductList() {
+import { fetchData } from "../../services/api.service";
+
+const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then(res => {
-        if (!res.ok) throw new Error("Error loading");
-        return res.json();
-      })
-      .then(data => {
+    const fetchProducts = async () => {
+      try {
+        const data = await fetchData("products");
         setProducts(data.products || []);
-        setLoading(false);
-      })
-      .catch(err => {
+      } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetchProducts();
   }, []);
 
+  if (loading) {
+    return <Spinner />;
+  }
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
   return (
-    <main>
+    <>
       <h1>Our products</h1>
-      {loading && <Spinner />}
-      {error && <p className="error">{error}</p>}
-      {!loading && !error && (
-        <div className="products-grid"> 
-          {products.map(product => (
+      <div className="products-grid"> 
+        {products.map(product => (
   <ProductCard key={product.id} product={product} />
-))}
-        </div>
-      )}
-    </main>
+        ))}
+      </div>
+    </>
   );
 }
 
