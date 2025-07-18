@@ -1,8 +1,8 @@
 .product-details {
-  max-width: 1200px;
+  max-width: var(--max-width-xl);
   margin: 0 auto;
   padding: var(--spacing-xl);
-  min-width: 980px;
+  min-width: var(--min-width-lg);
 }
 
 .back-btn {
@@ -21,11 +21,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xl);
-  background: #fff;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  background: var(--white);
+  border: var(--border-thin) solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
-  box-shadow: 0 2px 8px var(--shadow-color);
+  box-shadow: var(--shadow-md) var(--shadow-color);
 }
 
 .product-details__image {
@@ -33,18 +33,52 @@
   align-items: center;
   justify-content: center;
   background: var(--background-color);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
 }
 
 .product-details__image img {
   max-width: 100%;
-  max-height: 400px;
+  max-height: var(--image-max-height);
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
 }
 
 .product-details__info h1 {
-  font-size: 28px;
-  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-xxxl);
+  margin: 0;
+  flex: 1;
+}
+
+.favorite-btn-large {
+  background: none;
+  border: none;
+  font-size: var(--font-huge);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-round);
+  transition: transform 0.2s, background-color 0.2s;
+  width: var(--button-height-lg);
+  height: var(--button-height-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--spacing-md);
+}
+
+.favorite-btn-large:hover {
+  transform: scale(1.1);
+  background-color: var(--white-90);
+  box-shadow: var(--shadow-md) var(--shadow-light);
+}
+
+.favorite-btn-large.favorite-active {
+  animation: heartbeat 0.3s ease-in-out;
 }
 
 .brand {
@@ -54,7 +88,7 @@
 }
 
 .price {
-  font-size: 24px;
+  font-size: var(--font-xxl);
   font-weight: bold;
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
@@ -69,7 +103,7 @@
 }
 
 .stock.in-stock {
-  color: green;
+  color: var(--success-color);
 }
 
 .stock.out-of-stock {
