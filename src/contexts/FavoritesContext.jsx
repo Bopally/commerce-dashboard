@@ -17,28 +17,75 @@ export const useFavorites = () => {
 // Favorites provider component
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([])
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Load favorites from localStorage on mount
   useEffect(() => {
-    try {
-      const storedFavorites = localStorage.getItem(FAVORITES_STORAGE_KEY)
-      if (storedFavorites) {
-        setFavorites(JSON.parse(storedFavorites))
+    const loadFavorites = () => {
+      try {
+        if (typeof Storage === 'undefined') {
+          console.warn('localStorage is not supported in this browser')
+          setIsLoaded(true)
+          return
+        }
+
+        const storedFavorites = localStorage.getItem(FAVORITES_STORAGE_KEY)
+
+        if (
+          storedFavorites &&
+          storedFavorites !== 'null' &&
+          storedFavorites !== 'undefined'
+        ) {
+          const parsedFavorites = JSON.parse(storedFavorites)
+
+          if (Array.isArray(parsedFavorites)) {
+            setFavorites(parsedFavorites)
+          } else {
+            console.warn('Stored favorites is not an array, resetting...')
+            localStorage.removeItem(FAVORITES_STORAGE_KEY)
+            setFavorites([])
+          }
+        } else {
+          setFavorites([])
+        }
+      } catch (error) {
+        console.error('❌ Error loading favorites from localStorage:', error)
+        // En cas d'erreur, nettoyer le localStorage
+        try {
+          localStorage.removeItem(FAVORITES_STORAGE_KEY)
+        } catch (cleanupError) {
+          console.error('Error cleaning up localStorage:', cleanupError)
+        }
+        setFavorites([])
+      } finally {
+        setIsLoaded(true)
       }
-    } catch (error) {
-      console.error('Error loading favorites from localStorage:', error)
-      setFavorites([])
     }
+
+    loadFavorites()
   }, [])
 
-  // Save favorites to localStorage whenever favorites change
+  // Save favorites to localStorage whenever favorites change (but not on initial load)
   useEffect(() => {
-    try {
-      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites))
-    } catch (error) {
-      console.error('Error saving favorites to localStorage:', error)
+    if (isLoaded) {
+      try {
+        const favoritesToSave = JSON.stringify(favorites)
+        localStorage.setItem(FAVORITES_STORAGE_KEY, favoritesToSave)
+
+        const verification = localStorage.getItem(FAVORITES_STORAGE_KEY)
+        if (verification !== favoritesToSave) {
+          console.error('❌ Save verification failed!')
+        }
+      } catch (error) {
+        console.error('❌ Error saving favorites to localStorage:', error)
+
+        // Vérifier si c'est un problème de quota
+        if (error.name === 'QuotaExceededError') {
+          console.error('localStorage quota exceeded!')
+        }
+      }
     }
-  }, [favorites])
+  }, [favorites, isLoaded])
 
   // Check if a product is in favorites
   const isFavorite = (productId) => {
@@ -47,27 +94,17 @@ export const FavoritesProvider = ({ children }) => {
 
   // Add or remove product from favorites
   const toggleFavorite = (product) => {
-    console.log('Toggling favorite for product:', product.title)
     setFavorites((currentFavorites) => {
-      console.log('Current favorites:', currentFavorites.length)
       const isCurrentlyFavorite = currentFavorites.some(
         (fav) => fav.id === product.id
       )
 
       if (isCurrentlyFavorite) {
         // Remove from favorites
-        console.log('Removing from favorites')
-        const newFavorites = currentFavorites.filter(
-          (fav) => fav.id !== product.id
-        )
-        console.log('New favorites count:', newFavorites.length)
-        return newFavorites
+        return currentFavorites.filter((fav) => fav.id !== product.id)
       } else {
         // Add to favorites
-        console.log('Adding to favorites')
-        const newFavorites = [...currentFavorites, product]
-        console.log('New favorites count:', newFavorites.length)
-        return newFavorites
+        return [...currentFavorites, product]
       }
     })
   }
