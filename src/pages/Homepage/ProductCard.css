@@ -5,10 +5,10 @@
 }
 
 .product-card {
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 8px var(--shadow-color);
+  border: var(--border-thin) solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow-md) var(--shadow-color);
   overflow: hidden;
   padding: var(--spacing-md);
   text-align: center;
@@ -18,13 +18,13 @@
 .image-hover-container {
   position: relative;
   width: 100%;
-  height: 180px;
+  height: var(--card-height);
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--background-color);
   margin-bottom: var(--spacing-md);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
 }
 
 .product-image {
@@ -35,7 +35,7 @@
 .description-hover {
   position: absolute;
   width: 100%;
-  background: rgba(255, 255, 255, 0.97);
+  background: var(--white-97);
   color: var(--text-primary);
   display: flex;
   align-items: center;
@@ -43,7 +43,7 @@
   opacity: 0;
   transition: opacity 0.8s;
   padding: var(--spacing-md);
-  font-size: 15px;
+  font-size: var(--font-sm);
 }
 
 .image-hover-container:hover .description-hover {
@@ -52,7 +52,7 @@
 }
 
 .product-title {
-  font-size: 18px;
+  font-size: var(--font-lg);
   margin: var(--spacing-sm) 0 var(--spacing-xs) 0;
 }
 
@@ -87,17 +87,17 @@
 .favorite-btn {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: var(--font-xxl);
   cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-round);
   transition: transform 0.2s, background-color 0.2s;
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
   z-index: 1;
-  width: 40px;
-  height: 40px;
+  width: var(--button-height-md);
+  height: var(--button-height-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,7 +105,7 @@
 
 .favorite-btn:hover {
   transform: scale(1.1);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--white-90);
 }
 
 .favorite-btn.favorite-active {
@@ -126,47 +126,47 @@
 
 .favorites-empty {
   text-align: center;
-  padding: 64px 32px;
+  padding: var(--spacing-xxxl) var(--spacing-xl);
   color: var(--text-secondary);
 }
 
 .favorites-empty h2 {
-  font-size: 28px;
-  margin-bottom: 16px;
+  font-size: var(--font-xxxl);
+  margin-bottom: var(--spacing-md);
   color: var(--text-primary);
 }
 
 .favorites-empty p {
-  font-size: 18px;
+  font-size: var(--font-lg);
   margin: 0;
 }
 
 .favorites-container {
-  padding: 32px;
+  padding: var(--spacing-xl);
 }
 
 .favorites-container h1 {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: var(--spacing-xl);
   color: var(--text-primary);
 }
 
 .main-nav {
-  background: #fff;
-  padding: 16px 32px;
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 32px;
+  background: var(--white);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-bottom: var(--border-thin) solid var(--border-color);
+  box-shadow: var(--shadow-sm) var(--shadow-light);
+  margin-bottom: var(--spacing-xl);
   display: flex;
-  gap: 24px;
+  gap: var(--spacing-lg);
 }
 
 .nav-link {
   color: var(--text-primary);
   text-decoration: none;
   font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
   transition: background-color 0.2s, color 0.2s;
 }
 
@@ -177,5 +177,5 @@
 
 .nav-link.active {
   background-color: var(--primary-color);
-  color: #fff;
+  color: var(--white);
 }
