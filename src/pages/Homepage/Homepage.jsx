@@ -4,13 +4,18 @@ import FavoritesList from './FavoritesList'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import ProductDetails from './ProductDetails'
 import { useFavorites } from '../../contexts/FavoritesContext'
+import { NetworkStatus } from '../../components/LoadingStates'
+import { useNetworkStatus } from '../../hooks/useNetworkStatus'
 
 function Homepage() {
   const { favorites } = useFavorites()
+  const isOnline = useNetworkStatus()
+  const basename = ''
 
   return (
-    <Router basename="/commerce-dashboard">
+    <Router basename={basename}>
       <div>
+        <NetworkStatus isOnline={isOnline} />
         {/* Navigation */}
         <nav className="main-nav">
           <Link to="/" className="nav-link">
