@@ -12,7 +12,7 @@ function ProductCard({ product }) {
   }
 
   return (
-    <Link to={`/products/${product.id}`} className="product-card-link">
+    <Link to={`products/${product.id}`} className="product-card-link">
       <div className="product-card" key={product.id}>
         <div className="image-hover-container">
           <img
