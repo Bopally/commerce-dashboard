@@ -1,24 +1,24 @@
 main {
   background: #f9f9f9;
   min-height: 100%;
-  padding-bottom: 3rem;
+  padding-bottom: 48px;
 }
 
 h1 {
   text-align: center;
-  font-size: 2rem;
-  margin: 2rem 0 1rem 0;
+  font-size: 32px;
+  margin: 32px 0 16px 0;
 }
 
 .error {
   color: red;
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 32px;
 }
 
 .products-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 1.5rem;
-  padding: 2rem;
+  gap: 24px;
+  padding: 32px;
 }
