@@ -19,11 +19,13 @@
   font-style: italic;
   margin-bottom: var(--spacing-md);
   max-width: 90%;
+  line-height: 1.4;
 }
 
 .quote-author {
   font-size: var(--font-md);
   color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
 }
 
 .quote-refresh-bottom {
@@ -41,6 +43,11 @@
   gap: var(--spacing-xs);
   justify-content: center;
   min-width: 120px;
+}
+
+.quote-refresh-bottom:hover {
+  background: var(--primary-color);
+  transform: var(--translate-up-sm);
 }
 
 .quote-error {
@@ -89,4 +96,49 @@
   color: var(--text-secondary);
   font-size: var(--font-md);
   margin: 0;
+}
+
+/* Responsive Design for Quotes */
+@media (max-width: 1199px) {
+  .quote-container {
+    margin: var(--spacing-lg) auto;
+    padding: var(--spacing-md);
+    height: auto;
+    min-height: 200px;
+  }
+
+  .quote-text {
+    font-size: var(--font-xl, 20px);
+  }
+}
+
+@media (max-width: 1050px) and (min-width: 980px) {
+  .quote-container {
+    max-width: 90%;
+    height: auto;
+    min-height: 180px;
+    padding: var(--spacing-md);
+  }
+
+  .quote-text {
+    font-size: var(--font-lg);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .quote-author {
+    font-size: var(--font-sm);
+  }
+
+  .quote-refresh-bottom {
+    font-size: var(--font-xs, 12px);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 980px) {
+  .quote-container {
+    min-width: 500px;
+    margin: var(--spacing-lg) auto;
+  }
 }

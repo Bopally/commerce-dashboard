@@ -2,6 +2,7 @@ main {
   background: var(--background-color);
   min-height: 100%;
   padding-bottom: var(--spacing-xxl);
+  min-width: var(--min-width-lg);
 }
 
 h1 {
@@ -18,7 +19,43 @@ h1 {
 
 .products-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-lg);
   padding: var(--spacing-xl);
+}
+
+/* Responsive Design */
+@media (max-width: 1199px) {
+  main {
+    padding-bottom: var(--spacing-xl);
+  }
+
+  h1 {
+    font-size: var(--font-xxxl);
+    margin: var(--spacing-lg) 0 var(--spacing-sm) 0;
+  }
+
+  .products-grid {
+    padding: var(--spacing-lg);
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 1050px) and (min-width: 980px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 980px) {
+  main {
+    min-width: var(--min-width-lg);
+    overflow-x: auto;
+  }
+
+  .products-grid {
+    min-width: 920px;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
