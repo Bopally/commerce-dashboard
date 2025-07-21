@@ -79,7 +79,6 @@ export const FavoritesProvider = ({ children }) => {
       } catch (error) {
         console.error('❌ Error saving favorites to localStorage:', error)
 
-        // Vérifier si c'est un problème de quota
         if (error.name === 'QuotaExceededError') {
           console.error('localStorage quota exceeded!')
         }
@@ -89,19 +88,21 @@ export const FavoritesProvider = ({ children }) => {
 
   // Check if a product is in favorites
   const isFavorite = (productId) => {
-    return favorites.some((product) => product.id === productId)
+    return favorites.some((product) => {
+      return product.id == productId // Using == instead of === to handle string/number comparison
+    })
   }
 
   // Add or remove product from favorites
   const toggleFavorite = (product) => {
     setFavorites((currentFavorites) => {
       const isCurrentlyFavorite = currentFavorites.some(
-        (fav) => fav.id === product.id
+        (fav) => fav.id == product.id // Using == for type coercion
       )
 
       if (isCurrentlyFavorite) {
         // Remove from favorites
-        return currentFavorites.filter((fav) => fav.id !== product.id)
+        return currentFavorites.filter((fav) => fav.id != product.id) // Using != for type coercion
       } else {
         // Add to favorites
         return [...currentFavorites, product]
@@ -113,7 +114,7 @@ export const FavoritesProvider = ({ children }) => {
   const addToFavorites = (product) => {
     setFavorites((currentFavorites) => {
       const isAlreadyFavorite = currentFavorites.some(
-        (fav) => fav.id === product.id
+        (fav) => fav.id == product.id
       )
       if (!isAlreadyFavorite) {
         return [...currentFavorites, product]
@@ -125,7 +126,7 @@ export const FavoritesProvider = ({ children }) => {
   // Remove product from favorites
   const removeFromFavorites = (productId) => {
     setFavorites((currentFavorites) =>
-      currentFavorites.filter((fav) => fav.id !== productId)
+      currentFavorites.filter((fav) => fav.id != productId)
     )
   }
 
