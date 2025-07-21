@@ -3,7 +3,7 @@ import { useFavorites } from '../../contexts/FavoritesContext'
 import { NetworkStatus } from '../../components/LoadingStates'
 import { useNetworkStatus } from '../../hooks/useNetworkStatus'
 
-function Header() {
+function Homepage() {
   const { favorites } = useFavorites()
   const isOnline = useNetworkStatus()
 
@@ -24,4 +24,4 @@ function Header() {
   )
 }
 
-export default Header
+export default Homepage
