@@ -8,8 +8,9 @@ import {
   EmptyState,
   ProductsLoadingSkeleton,
 } from '../../components/LoadingStates'
+import Quote from '../../components/quotes'
 
-const ProductList = () => {
+export const ProductList = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -78,8 +79,7 @@ const ProductList = () => {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+      <Quote />
     </>
   )
 }
-
-export default ProductList
