@@ -1,7 +1,24 @@
 import './UserCard.css'
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { fetchData } from '../../services/api.service'
 
 function UserCard({ user }) {
+  const [cartCount, setCartCount] = useState(null)
+
+  useEffect(() => {
+    const checkUserCarts = async () => {
+      try {
+        const data = await fetchData(`carts/user/${user.id}`)
+        setCartCount(data.carts?.length || 0)
+      } catch {
+        setCartCount(0)
+      }
+    }
+
+    checkUserCarts()
+  }, [user.id])
+
   return (
     <Link
       to={`/commerce-dashboard/users/${user.id}`}
@@ -19,6 +36,11 @@ function UserCard({ user }) {
               {user.firstName} {user.lastName}
             </h3>
             <p className="user-email">{user.email}</p>
+            {cartCount !== null && (
+              <p className="user-cart-count">
+                🛒 {cartCount} {cartCount === 1 ? 'cart' : 'carts'}
+              </p>
+            )}
           </div>
         </div>
 

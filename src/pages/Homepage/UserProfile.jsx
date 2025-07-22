@@ -1,7 +1,9 @@
 import { useParams, Link } from 'react-router-dom'
+import { useState } from 'react'
 import { useUser } from '../../assets/hooks/useUser'
 import { useUserCarts } from '../../assets/hooks/useUserCarts'
 import CartCard from '../../components/CartCard'
+import CartSummary from '../../components/CartSummary'
 import {
   LoadingSpinner,
   ErrorState,
@@ -13,6 +15,7 @@ const UserProfile = () => {
   const { id } = useParams()
   const { user, loading: userLoading, error: userError } = useUser(id)
   const { carts, loading: cartsLoading, error: cartsError } = useUserCarts(id)
+  const [viewMode, setViewMode] = useState('detailed')
 
   // Loading state
   if (userLoading) {
@@ -114,7 +117,30 @@ const UserProfile = () => {
 
         {/* User Carts Section */}
         <div className="user-carts-section">
-          <h2 className="carts-title">🛒 Shopping Carts ({carts.length})</h2>
+          <div className="carts-header">
+            <h2 className="carts-title">🛒 Shopping Carts ({carts.length})</h2>
+
+            {carts.length > 0 && (
+              <div className="view-toggle">
+                <button
+                  className={`toggle-btn ${
+                    viewMode === 'detailed' ? 'active' : ''
+                  }`}
+                  onClick={() => setViewMode('detailed')}
+                >
+                  📋 Detailed
+                </button>
+                <button
+                  className={`toggle-btn ${
+                    viewMode === 'summary' ? 'active' : ''
+                  }`}
+                  onClick={() => setViewMode('summary')}
+                >
+                  📊 Summary
+                </button>
+              </div>
+            )}
+          </div>
 
           {cartsLoading ? (
             <LoadingSpinner message="Loading user carts..." />
@@ -127,10 +153,18 @@ const UserProfile = () => {
               message="This user hasn't created any shopping carts yet."
             />
           ) : (
-            <div className="carts-grid">
-              {carts.map((cart) => (
-                <CartCard key={cart.id} cart={cart} />
-              ))}
+            <div
+              className={
+                viewMode === 'summary' ? 'carts-summary-grid' : 'carts-grid'
+              }
+            >
+              {carts.map((cart) =>
+                viewMode === 'summary' ? (
+                  <CartSummary key={cart.id} cart={cart} />
+                ) : (
+                  <CartCard key={cart.id} cart={cart} />
+                )
+              )}
             </div>
           )}
         </div>

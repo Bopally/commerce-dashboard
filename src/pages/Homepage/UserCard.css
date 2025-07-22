@@ -56,6 +56,13 @@
   word-break: break-word;
 }
 
+.user-cart-count {
+  font-size: var(--font-xs);
+  color: var(--success-color);
+  margin: var(--spacing-xs) 0 0 0;
+  font-weight: 600;
+}
+
 .user-card__details {
   display: flex;
   flex-direction: column;
