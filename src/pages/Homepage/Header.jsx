@@ -15,6 +15,9 @@ function Homepage() {
         <Link to="/" className="nav-link">
           🏠 Homepage
         </Link>
+        <Link to="/commerce-dashboard/users" className="nav-link">
+          👥 Users
+        </Link>
         <Link to="/commerce-dashboard/favorites" className="nav-link">
           💗 Favorites ({favorites.length})
         </Link>
