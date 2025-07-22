@@ -1,0 +1,218 @@
+.user-profile {
+  max-width: var(--max-width-xl);
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  min-width: var(--min-width-lg);
+}
+
+.back-btn {
+  display: inline-block;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: var(--text-secondary);
+}
+
+.user-profile__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.user-profile__header {
+  display: flex;
+  gap: var(--spacing-xl);
+  background: var(--white);
+  border: var(--border-thin) solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md) var(--shadow-color);
+}
+
+.user-profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: var(--radius-round);
+  object-fit: cover;
+  border: 4px solid var(--background-color);
+  box-shadow: var(--shadow-lg) var(--shadow-light);
+  flex-shrink: 0;
+}
+
+.user-profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.user-profile-name {
+  font-size: var(--font-huge);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.user-profile-email {
+  font-size: var(--font-lg);
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: 500;
+}
+
+.user-profile-details {
+  margin-top: var(--spacing-md);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--background-color);
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s;
+}
+
+.detail-item:hover {
+  background: var(--border-color);
+}
+
+.detail-icon {
+  font-size: var(--font-lg);
+  width: 24px;
+  text-align: center;
+}
+
+.detail-text {
+  font-size: var(--font-md);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.user-carts-section {
+  background: var(--white);
+  border: var(--border-thin) solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md) var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.carts-title {
+  font-size: var(--font-xxxl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-lg) 0;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1199px) {
+  .user-profile {
+    padding: var(--spacing-lg);
+  }
+
+  .user-profile__header,
+  .user-carts-section {
+    padding: var(--spacing-lg);
+  }
+
+  .user-profile-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .user-profile-name {
+    font-size: var(--font-xxxl);
+  }
+
+  .detail-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 1050px) and (min-width: 980px) {
+  .user-profile__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-lg);
+  }
+
+  .user-profile-avatar {
+    width: 140px;
+    height: 140px;
+  }
+
+  .user-profile-info {
+    align-items: center;
+  }
+
+  .detail-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-sm);
+  }
+
+  .detail-item {
+    justify-content: center;
+  }
+
+  .carts-title {
+    font-size: var(--font-xxl);
+  }
+}
+
+@media (max-width: 980px) {
+  .user-profile {
+    min-width: var(--min-width-lg);
+    overflow-x: auto;
+  }
+
+  .user-profile__container {
+    min-width: 900px;
+  }
+
+  .user-profile__header {
+    min-width: 850px;
+  }
+
+  .user-carts-section {
+    min-width: 850px;
+  }
+}
+
+/* Loading and Error States within profile */
+.user-profile .loading-state,
+.user-profile .error-state,
+.user-profile .empty-state {
+  margin: var(--spacing-lg) 0;
+}
+
+/* Center empty state within carts section - higher specificity */
+.user-profile .user-carts-section .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 200px;
+  margin: 0;
+  max-width: none;
+  padding: var(--spacing-xl);
+  flex: 1;
+}
