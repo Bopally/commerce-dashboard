@@ -36,11 +36,10 @@ function UserCard({ user }) {
               {user.firstName} {user.lastName}
             </h3>
             <p className="user-email">{user.email}</p>
-            {cartCount !== null && (
-              <p className="user-cart-count">
-                🛒 {cartCount} {cartCount === 1 ? 'cart' : 'carts'}
-              </p>
-            )}
+
+            <p className="user-cart-count">
+              🛒 {cartCount || 0} {cartCount === 1 ? 'cart' : 'carts'}
+            </p>
           </div>
         </div>
 
