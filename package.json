@@ -8,7 +8,13 @@
     "build": "vite build",
     "deploy:docs": "rm -rf docs && pnpm build && git add docs -A && git commit -m 'GitHub Pages deployment' && git push",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:ui:debug": "playwright test --ui --debug",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "react": "^19.1.0",
