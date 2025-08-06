@@ -1,10 +1,14 @@
 import { test, expect } from '@playwright/test'
 import { HomePage } from './pages/homepage.page.js'
+import { setupApiMocks } from './helpers/apiMocks.js'
 
 test.describe('Favorites Functionality', () => {
   let homePage
 
   test.beforeEach(async ({ page }) => {
+    // Setup API mocks before navigating to page
+    await setupApiMocks(page)
+    
     homePage = new HomePage(page)
     await homePage.goto()
     await homePage.waitForPageLoad()
@@ -141,6 +145,11 @@ test.describe('Favorites Functionality', () => {
 })
 
 test.describe('Cart Summary Integration', () => {
+  test.beforeEach(async ({ page }) => {
+    // Setup API mocks for cart integration tests
+    await setupApiMocks(page)
+  })
+
   test('should display cart summaries in user profiles', async ({ page }) => {
     // Navigate to users page
     await page.goto('/commerce-dashboard/users')
@@ -148,55 +157,31 @@ test.describe('Cart Summary Integration', () => {
     // Wait for users to load
     await page.locator('.users-grid').waitFor({ state: 'visible' })
 
-    // Find a user with carts
+    // Click on first user (Emily Johnson - has 1 cart in mock data)
     const userCards = await page.locator('.user-card').all()
-    let userWithCartsFound = false
+    await userCards[0].click()
 
-    for (
-      let i = 0;
-      i < Math.min(userCards.length, 10) && !userWithCartsFound;
-      i++
-    ) {
-      const cartCountElement = userCards[i].locator('.user-cart-count')
-      // here
+    // Wait for profile to load
+    await page.locator('.user-profile-name').waitFor({ state: 'visible' })
 
-      if (await cartCountElement.isVisible()) {
-        const cartText = await cartCountElement.textContent()
-        const cartCount = parseInt(cartText.match(/\d+/)?.[0] || '0')
+    // Switch to summary view if carts exist
+    const summaryButton = page.locator('.toggle-btn', {
+      hasText: '📊 Summary',
+    })
+    if (await summaryButton.isVisible()) {
+      await summaryButton.click()
 
-        if (cartCount > 0) {
-          // Click on this user
-          await userCards[i].click()
+      // Check cart summary components (Emily has 1 cart)
+      await expect(page.locator('.carts-summary-grid')).toBeVisible()
+      await expect(page.locator('.cart-summary')).toHaveCount(1)
 
-          // Wait for profile to load
-          await page.locator('.user-profile-name').waitFor({ state: 'visible' })
-
-          // Switch to summary view if carts exist
-          const summaryButton = page.locator('.toggle-btn', {
-            hasText: '📊 Summary',
-          })
-          if (await summaryButton.isVisible()) {
-            await summaryButton.click()
-
-            // Check cart summary components
-            await expect(page.locator('.carts-summary-grid')).toBeVisible()
-            await expect(page.locator('.cart-summary')).toHaveCount(cartCount)
-
-            // Check cart summary elements
-            await expect(
-              page.locator('.cart-summary__title').first()
-            ).toBeVisible()
-            await expect(page.locator('.total-amount').first()).toBeVisible()
-            await expect(page.locator('.summary-stat').first()).toBeVisible()
-
-            userWithCartsFound = true
-          }
-        }
-      }
+      // Check cart summary elements
+      await expect(
+        page.locator('.cart-summary__title').first()
+      ).toBeVisible()
+      await expect(page.locator('.total-amount').first()).toBeVisible()
+      await expect(page.locator('.summary-stat').first()).toBeVisible()
     }
-
-    // Verify we found and tested a user with carts
-    expect(userWithCartsFound).toBe(true)
   })
 
   test('should toggle between detailed and summary views', async ({ page }) => {

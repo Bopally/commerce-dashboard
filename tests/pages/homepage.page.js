@@ -73,10 +73,6 @@ export class HomePage {
 
   async waitForPageLoad() {
     // Wait for either products to load or an error state
-    await Promise.race([
-      this.waitForProducts(),
-      this.errorState.waitFor({ state: 'visible' }),
-      this.loadingSpinner.waitFor({ state: 'hidden', timeout: 10000 }),
-    ])
+    await this.waitForProducts()
   }
 }
