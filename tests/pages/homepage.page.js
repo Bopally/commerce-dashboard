@@ -50,7 +50,9 @@ export class HomePage {
   }
 
   async addToFavorites(index = 0) {
-    await this.favoriteButtons.nth(index).click()
+    const favoriteButton = this.favoriteButtons.nth(index)
+    await favoriteButton.waitFor({ state: 'visible' })
+    await favoriteButton.click({ force: true })
   }
 
   async navigateToUsers() {
