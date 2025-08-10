@@ -1,6 +1,7 @@
 import './ProductCard.css'
 import { Link } from 'react-router-dom'
 import { useFavorites } from '../../contexts/FavoritesContext'
+import clsx from 'clsx'
 
 function ProductCard({ product }) {
   const { isFavorite, toggleFavorite } = useFavorites()
@@ -30,9 +31,9 @@ function ProductCard({ product }) {
         </p>
         <p className="product-category">{product.category}</p>
         <button
-          className={`favorite-btn ${
-            isFavorite(product.id) ? 'favorite-active' : ''
-          }`}
+          className={clsx('favorite-btn', {
+            'favorite-active': isFavorite(product.id)
+          })}
           onClick={handleFavoriteClick}
           aria-label={
             isFavorite(product.id)
