@@ -1,7 +1,19 @@
 import './CartCard.css'
 
+/**
+ * @typedef {import('../types/interfaces.js').Cart} Cart
+ */
+
+/**
+ * CartCard component displays detailed information about a shopping cart
+ * @param {Object} props
+ * @param {Cart} props.cart - Cart data to display
+ * @returns {JSX.Element}
+ */
 function CartCard({ cart }) {
+  /** @type {number} */
   const totalProducts = cart.products?.length || 0
+  /** @type {number} */
   const totalQuantity =
     cart.products?.reduce((sum, product) => sum + product.quantity, 0) || 0
 

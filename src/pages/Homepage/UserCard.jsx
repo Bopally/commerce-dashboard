@@ -1,6 +1,18 @@
 import './UserCard.css'
 import { Link } from 'react-router-dom'
 
+/**
+ * @typedef {import('../../types/interfaces.js').User} User
+ * @typedef {import('../../types/interfaces.js').UserHandlers} UserHandlers
+ */
+
+/**
+ * UserCard component displays a summary card for a single user
+ * @param {Object} props
+ * @param {User} props.user - User data to display
+ * @param {UserHandlers} props.handlers - Handler functions from parent component
+ * @returns {JSX.Element}
+ */
 function UserCard({ user, handlers }) {
   // Get cart data from lifted state via props (no individual loading needed)
   const { 

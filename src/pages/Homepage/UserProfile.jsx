@@ -9,11 +9,27 @@ import {
 } from '../../components/LoadingStates'
 import './UserProfile.css'
 
+/**
+ * @typedef {import('../../types/interfaces.js').User} User
+ * @typedef {import('../../types/interfaces.js').Cart} Cart
+ * @typedef {import('../../types/interfaces.js').UserHandlers} UserHandlers
+ */
+
+/**
+ * UserProfile component displays detailed information about a user and their shopping carts
+ * @param {Object} props
+ * @param {UserHandlers} props.handlers - Handler functions and data from parent component
+ * @returns {JSX.Element}
+ */
 const UserProfile = ({ handlers }) => {
   const { id } = useParams()
+  /** @type {['detailed' | 'summary', function]} */
   const [viewMode, setViewMode] = useState('detailed')
+  /** @type {[User | null, function]} */
   const [user, setUser] = useState(null)
+  /** @type {[boolean, function]} */
   const [userLoading, setUserLoading] = useState(true)
+  /** @type {[string | null, function]} */
   const [userError, setUserError] = useState(null)
 
   // Get data from lifted state via props
@@ -49,8 +65,11 @@ const UserProfile = ({ handlers }) => {
   }, [id, getUser, allUsersLoading, loadUserCarts])
 
   // Get carts data from lifted state
+  /** @type {Cart[]} */
   const carts = getUserCarts ? getUserCarts(id) : []
+  /** @type {boolean} */
   const cartsLoading = isUserCartsLoading ? isUserCartsLoading() : false
+  /** @type {string | null} */
   const cartsError = getUserCartsError ? getUserCartsError() : null
 
   // Loading state

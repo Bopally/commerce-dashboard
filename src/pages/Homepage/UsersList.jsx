@@ -8,6 +8,17 @@ import {
 } from '../../components/LoadingStates'
 import clsx from 'clsx'
 
+/**
+ * @typedef {import('../../types/interfaces.js').User} User
+ * @typedef {import('../../types/interfaces.js').UserHandlers} UserHandlers
+ */
+
+/**
+ * UsersList component displays a grid of user cards
+ * @param {Object} props
+ * @param {UserHandlers} props.handlers - Handler functions and data from parent component
+ * @returns {JSX.Element}
+ */
 export const UsersList = ({ handlers }) => {
   // Get data from lifted state via props instead of hooks
   const { users, usersLoading: loading, usersError: error, loadAllCarts } = handlers || {}

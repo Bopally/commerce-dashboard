@@ -4,16 +4,31 @@ import { fetchData } from '../../services/api.service'
 import { UsersList } from './UsersList'
 import UserProfile from './UserProfile'
 
-// Parent component managing lifted state for users and carts
+/**
+ * @typedef {import('../../types/interfaces.js').User} User
+ * @typedef {import('../../types/interfaces.js').Cart} Cart
+ * @typedef {import('../../types/interfaces.js').UserHandlers} UserHandlers
+ */
+
+/**
+ * Parent component managing lifted state for users and carts
+ * @returns {JSX.Element}
+ */
 export const UsersManager = () => {
   // Lifted state for users
+  /** @type {[User[], function]} */
   const [users, setUsers] = useState([])
+  /** @type {[boolean, function]} */
   const [usersLoading, setUsersLoading] = useState(true)
+  /** @type {[string | null, function]} */
   const [usersError, setUsersError] = useState(null)
 
   // Lifted state for all carts (as a flat array)
+  /** @type {[Cart[], function]} */
   const [allCarts, setAllCarts] = useState([])
+  /** @type {[boolean, function]} */
   const [cartsLoading, setCartsLoading] = useState(false)
+  /** @type {[string | null, function]} */
   const [cartsError, setCartsError] = useState(null)
   const usersLoadedRef = useRef(false)
   const cartsLoadedRef = useRef(false)
@@ -64,31 +79,50 @@ export const UsersManager = () => {
   }, [loadAllCarts])
 
   // Get carts for a specific user using filter (user's preferred approach)
+  /**
+   * @param {string | number} userId
+   * @returns {Cart[]}
+   */
   const getUserCarts = (userId) => {
     return allCarts.filter(cart => cart.userId === parseInt(userId))
   }
 
   // Get cart count for a specific user using filter
+  /**
+   * @param {string | number} userId
+   * @returns {number}
+   */
   const getUserCartCount = (userId) => {
     return allCarts.filter(cart => cart.userId === parseInt(userId)).length
   }
 
   // Check if user carts are loading (simplified since we load all at once)
+  /**
+   * @returns {boolean}
+   */
   const isUserCartsLoading = () => {
     return cartsLoading
   }
 
   // Get cart error for a specific user (simplified since we load all at once)
+  /**
+   * @returns {string | null}
+   */
   const getUserCartsError = () => {
     return cartsError
   }
 
   // Get specific user from already loaded users (avoid duplicate API calls)
+  /**
+   * @param {string | number} userId
+   * @returns {User | undefined}
+   */
   const getUser = (userId) => {
     return users.find(user => user.id === parseInt(userId))
   }
 
   // Handlers object for prop drilling
+  /** @type {UserHandlers} */
   const handlers = {
     // Users data
     users,

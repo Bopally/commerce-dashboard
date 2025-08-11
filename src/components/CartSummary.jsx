@@ -1,15 +1,30 @@
 import './CartSummary.css'
 
+/**
+ * @typedef {import('../types/interfaces.js').Cart} Cart
+ */
+
+/**
+ * CartSummary component displays a summarized view of a shopping cart
+ * @param {Object} props
+ * @param {Cart} props.cart - Cart data to display
+ * @returns {JSX.Element | null}
+ */
 function CartSummary({ cart }) {
   if (!cart) {
     return null
   }
 
+  /** @type {number} */
   const totalProducts = cart.products?.length || 0
+  /** @type {number} */
   const totalQuantity =
     cart.products?.reduce((sum, product) => sum + product.quantity, 0) || 0
+  /** @type {number} */
   const totalValue = cart.total || 0
+  /** @type {number} */
   const discountedTotal = cart.discountedTotal || 0
+  /** @type {number} */
   const savings = totalValue - discountedTotal
 
   return (
