@@ -1,7 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
-import { useState } from 'react'
-import { useUser } from '../../assets/hooks/useUser'
-import { useUserCarts } from '../../assets/hooks/useUserCarts'
+import { useState, useEffect } from 'react'
+import { fetchData } from '../../services/api.service'
 import CartCard from '../../components/CartCard'
 import CartSummary from '../../components/CartSummary'
 import {
@@ -11,11 +10,50 @@ import {
 } from '../../components/LoadingStates'
 import './UserProfile.css'
 
-const UserProfile = () => {
+const UserProfile = ({ handlers }) => {
   const { id } = useParams()
-  const { user, loading: userLoading, error: userError } = useUser(id)
-  const { carts, loading: cartsLoading, error: cartsError } = useUserCarts(id)
   const [viewMode, setViewMode] = useState('detailed')
+  const [user, setUser] = useState(null)
+  const [userLoading, setUserLoading] = useState(true)
+  const [userError, setUserError] = useState(null)
+
+  // Get cart data from lifted state via props
+  const {
+    getUserCarts,
+    isUserCartsLoading,
+    getUserCartsError,
+    loadUserCarts
+  } = handlers || {}
+
+  // Load specific user data
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        setUserLoading(true)
+        setUserError(null)
+        const data = await fetchData(`users/${id}`)
+        setUser(data)
+        
+        // Also load user carts using lifted state
+        if (loadUserCarts) {
+          loadUserCarts(id)
+        }
+      } catch (err) {
+        setUserError(err.message)
+      } finally {
+        setUserLoading(false)
+      }
+    }
+
+    if (id) {
+      loadUser()
+    }
+  }, [id, loadUserCarts])
+
+  // Get carts data from lifted state
+  const carts = getUserCarts ? getUserCarts(id) : []
+  const cartsLoading = isUserCartsLoading ? isUserCartsLoading(id) : false
+  const cartsError = getUserCartsError ? getUserCartsError(id) : null
 
   // Loading state
   if (userLoading) {

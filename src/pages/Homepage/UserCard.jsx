@@ -1,23 +1,24 @@
 import './UserCard.css'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { fetchData } from '../../services/api.service'
+import { useEffect } from 'react'
 
-function UserCard({ user }) {
-  const [cartCount, setCartCount] = useState(null)
+function UserCard({ user, handlers }) {
+  // Get cart data from lifted state via props instead of individual API calls
+  const { 
+    loadUserCarts, 
+    getUserCartCount, 
+    isUserCartsLoading 
+  } = handlers || {}
 
   useEffect(() => {
-    const checkUserCarts = async () => {
-      try {
-        const data = await fetchData(`carts/user/${user.id}`)
-        setCartCount(data.carts?.length || 0)
-      } catch {
-        setCartCount(0)
-      }
+    // Load carts when component mounts using lifted state method
+    if (loadUserCarts) {
+      loadUserCarts(user.id)
     }
+  }, [user.id, loadUserCarts])
 
-    checkUserCarts()
-  }, [user.id])
+  const cartCount = getUserCartCount ? getUserCartCount(user.id) : 0
+  const cartsLoading = isUserCartsLoading ? isUserCartsLoading(user.id) : false
 
   return (
     <Link
@@ -38,7 +39,7 @@ function UserCard({ user }) {
             <p className="user-email">{user.email}</p>
 
             <p className="user-cart-count">
-              🛒 {cartCount || 0} {cartCount === 1 ? 'cart' : 'carts'}
+              🛒 {cartsLoading ? 'Loading...' : `${cartCount} ${cartCount === 1 ? 'cart' : 'carts'}`}
             </p>
           </div>
         </div>

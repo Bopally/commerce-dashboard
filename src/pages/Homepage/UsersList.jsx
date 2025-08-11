@@ -1,6 +1,5 @@
 import React from 'react'
 import UserCard from './UserCard'
-import { useUsers } from '../../assets/hooks/useUsers'
 import {
   LoadingSpinner,
   ErrorState,
@@ -9,8 +8,9 @@ import {
 } from '../../components/LoadingStates'
 import clsx from 'clsx'
 
-export const UsersList = () => {
-  const { users, loading, error } = useUsers()
+export const UsersList = ({ handlers }) => {
+  // Get data from lifted state via props instead of hooks
+  const { users, usersLoading: loading, usersError: error } = handlers || {}
 
   // Loading state with skeleton
   if (loading) {
@@ -52,7 +52,7 @@ export const UsersList = () => {
       <h1>👥 Our Users ({users.length}) 👥</h1>
       <div className={clsx("users-grid")}>
         {users.map((user) => (
-          <UserCard key={user.id} user={user} />
+          <UserCard key={user.id} user={user} handlers={handlers} />
         ))}
       </div>
     </div>
