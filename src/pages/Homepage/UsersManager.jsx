@@ -83,12 +83,18 @@ export const UsersManager = () => {
     return cartsError
   }
 
+  // Get specific user from already loaded users (avoid duplicate API calls)
+  const getUser = (userId) => {
+    return users.find(user => user.id === parseInt(userId))
+  }
+
   // Handlers object for prop drilling
   const handlers = {
     // Users data
     users,
     usersLoading,
     usersError,
+    getUser,
 
     // Carts methods
     loadUserCarts,

@@ -17,34 +17,37 @@ const UserProfile = ({ handlers }) => {
   const [userLoading, setUserLoading] = useState(true)
   const [userError, setUserError] = useState(null)
 
-  // Get cart data from lifted state via props
-  const { getUserCarts, isUserCartsLoading, getUserCartsError, loadUserCarts } =
+  // Get data from lifted state via props
+  const { getUserCarts, isUserCartsLoading, getUserCartsError, loadUserCarts, getUser, users, usersLoading: allUsersLoading } =
     handlers || {}
 
-  // Load specific user data
+  // Get user from already loaded users (avoid duplicate API calls)
   useEffect(() => {
-    const loadUser = async () => {
-      try {
-        setUserLoading(true)
-        setUserError(null)
-        const data = await fetchData(`users/${id}`)
-        setUser(data)
+    if (!id) return
 
-        // Also load user carts using lifted state
-        if (loadUserCarts) {
-          loadUserCarts()
-        }
-      } catch (err) {
-        setUserError(err.message)
-      } finally {
-        setUserLoading(false)
+    // Wait for users to be loaded if still loading
+    if (allUsersLoading) {
+      setUserLoading(true)
+      return
+    }
+
+    // Get user from already loaded users
+    const foundUser = getUser ? getUser(id) : null
+    
+    if (foundUser) {
+      setUser(foundUser)
+      setUserError(null)
+      
+      // Load user carts using lifted state
+      if (loadUserCarts) {
+        loadUserCarts()
       }
+    } else {
+      setUserError('User not found')
     }
-
-    if (id) {
-      loadUser()
-    }
-  }, [id, loadUserCarts])
+    
+    setUserLoading(false)
+  }, [id, getUser, allUsersLoading, loadUserCarts])
 
   // Get carts data from lifted state
   const carts = getUserCarts ? getUserCarts(id) : []
