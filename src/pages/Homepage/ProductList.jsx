@@ -9,6 +9,7 @@ import {
   ProductsLoadingSkeleton,
 } from '../../components/LoadingStates'
 import Quote from '../../components/quotes'
+import clsx from 'clsx'
 
 export const ProductList = () => {
   const [products, setProducts] = useState([])
@@ -35,10 +36,10 @@ export const ProductList = () => {
   // Loading state with skeleton
   if (loading) {
     return (
-      <>
+      <div className={clsx("products-container", "loading-state")}>
         <h1>✨ Our products ✨</h1>
         <ProductsLoadingSkeleton />
-      </>
+      </div>
     )
   }
 
