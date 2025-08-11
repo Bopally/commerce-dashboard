@@ -1,5 +1,5 @@
 // src/components/Quote.jsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import './quotes.css'
 import { LoadingSpinner } from './LoadingStates'
 import { fetchData } from '../services/api.service'
@@ -8,6 +8,7 @@ const Quote = () => {
   const [quote, setQuote] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const initialLoadRef = useRef(false)
 
   const fetchQuote = async () => {
     try {
@@ -24,6 +25,8 @@ const Quote = () => {
   }
 
   useEffect(() => {
+    if (initialLoadRef.current) return
+    initialLoadRef.current = true
     fetchQuote()
   }, [])
 

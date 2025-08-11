@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import './ProductList.css'
 import ProductCard from './ProductCard'
 import { fetchData } from '../../services/api.service'
 import {
-  LoadingSpinner,
   ErrorState,
   EmptyState,
   ProductsLoadingSkeleton,
@@ -15,8 +14,12 @@ export const ProductList = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const productsLoadedRef = useRef(false)
 
   const fetchProducts = async () => {
+    if (productsLoadedRef.current) return
+    productsLoadedRef.current = true
+
     try {
       setLoading(true)
       setError('')
