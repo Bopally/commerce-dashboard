@@ -15,7 +15,7 @@ export const UsersList = () => {
   // Loading state with skeleton
   if (loading) {
     return (
-      <div className={clsx("users-container")}>
+      <div className={clsx("users-container", "loading-state")}>
         <h1>👥 Our Users 👥</h1>
         <ProductsLoadingSkeleton />
       </div>
