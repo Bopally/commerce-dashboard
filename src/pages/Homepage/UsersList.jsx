@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserCard from './UserCard'
 import {
   LoadingSpinner,
@@ -10,7 +10,14 @@ import clsx from 'clsx'
 
 export const UsersList = ({ handlers }) => {
   // Get data from lifted state via props instead of hooks
-  const { users, usersLoading: loading, usersError: error } = handlers || {}
+  const { users, usersLoading: loading, usersError: error, loadAllCarts } = handlers || {}
+
+  // Load all carts when component mounts for better performance
+  useEffect(() => {
+    if (loadAllCarts) {
+      loadAllCarts()
+    }
+  }, [loadAllCarts])
 
   // Loading state with skeleton
   if (loading) {

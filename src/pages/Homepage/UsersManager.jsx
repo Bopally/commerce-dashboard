@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { fetchData } from '../../services/api.service'
 import { UsersList } from './UsersList'
@@ -11,14 +11,19 @@ export const UsersManager = () => {
   const [usersLoading, setUsersLoading] = useState(true)
   const [usersError, setUsersError] = useState(null)
 
-  // Lifted state for all carts (indexed by user ID)
-  const [userCarts, setUserCarts] = useState({})
-  const [cartsLoading, setCartsLoading] = useState({})
-  const [cartsError, setCartsError] = useState({})
+  // Lifted state for all carts (as a flat array)
+  const [allCarts, setAllCarts] = useState([])
+  const [cartsLoading, setCartsLoading] = useState(false)
+  const [cartsError, setCartsError] = useState(null)
+  const usersLoadedRef = useRef(false)
+  const cartsLoadedRef = useRef(false)
 
   // Load users data
   useEffect(() => {
     const loadUsers = async () => {
+      if (usersLoadedRef.current) return
+      usersLoadedRef.current = true
+
       try {
         setUsersLoading(true)
         setUsersError(null)
@@ -34,50 +39,48 @@ export const UsersManager = () => {
     loadUsers()
   }, [])
 
-  // Load carts for a specific user
-  const loadUserCarts = async (userId) => {
-    if (userCarts[userId]) {
-      return // Already loaded
-    }
+  // Load all carts as flat array (user's preferred approach)
+  const loadAllCarts = useCallback(async () => {
+    if (cartsLoadedRef.current) return
+    cartsLoadedRef.current = true
 
     try {
-      setCartsLoading(prev => ({ ...prev, [userId]: true }))
-      setCartsError(prev => ({ ...prev, [userId]: null }))
-      
-      const data = await fetchData(`carts/user/${userId}`)
-      setUserCarts(prev => ({
-        ...prev,
-        [userId]: data.carts || []
-      }))
+      setCartsLoading(true)
+      setCartsError(null)
+      const data = await fetchData('carts')
+      setAllCarts(data.carts || [])
     } catch (err) {
-      setCartsError(prev => ({
-        ...prev,
-        [userId]: err.message
-      }))
+      console.error('Failed to load all carts:', err)
+      setCartsError(err.message)
     } finally {
-      setCartsLoading(prev => ({ ...prev, [userId]: false }))
+      setCartsLoading(false)
     }
-  }
+  }, [])
 
-  // Get carts for a specific user
+  // Load carts for a specific user (fallback for individual user profile)
+  const loadUserCarts = useCallback(async () => {
+    // Load all carts if not already loaded
+    await loadAllCarts()
+  }, [loadAllCarts])
+
+  // Get carts for a specific user using filter (user's preferred approach)
   const getUserCarts = (userId) => {
-    return userCarts[userId] || []
+    return allCarts.filter(cart => cart.userId === parseInt(userId))
   }
 
-  // Get cart count for a specific user
+  // Get cart count for a specific user using filter
   const getUserCartCount = (userId) => {
-    const carts = getUserCarts(userId)
-    return carts.length
+    return allCarts.filter(cart => cart.userId === parseInt(userId)).length
   }
 
-  // Check if user carts are loading
-  const isUserCartsLoading = (userId) => {
-    return cartsLoading[userId] || false
+  // Check if user carts are loading (simplified since we load all at once)
+  const isUserCartsLoading = () => {
+    return cartsLoading
   }
 
-  // Get cart error for a specific user
-  const getUserCartsError = (userId) => {
-    return cartsError[userId] || null
+  // Get cart error for a specific user (simplified since we load all at once)
+  const getUserCartsError = () => {
+    return cartsError
   }
 
   // Handlers object for prop drilling
@@ -86,13 +89,14 @@ export const UsersManager = () => {
     users,
     usersLoading,
     usersError,
-    
+
     // Carts methods
     loadUserCarts,
+    loadAllCarts,
     getUserCarts,
     getUserCartCount,
     isUserCartsLoading,
-    getUserCartsError
+    getUserCartsError,
   }
 
   return (

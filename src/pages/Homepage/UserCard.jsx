@@ -1,24 +1,15 @@
 import './UserCard.css'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
 
 function UserCard({ user, handlers }) {
-  // Get cart data from lifted state via props instead of individual API calls
+  // Get cart data from lifted state via props (no individual loading needed)
   const { 
-    loadUserCarts, 
     getUserCartCount, 
     isUserCartsLoading 
   } = handlers || {}
 
-  useEffect(() => {
-    // Load carts when component mounts using lifted state method
-    if (loadUserCarts) {
-      loadUserCarts(user.id)
-    }
-  }, [user.id, loadUserCarts])
-
   const cartCount = getUserCartCount ? getUserCartCount(user.id) : 0
-  const cartsLoading = isUserCartsLoading ? isUserCartsLoading(user.id) : false
+  const cartsLoading = isUserCartsLoading ? isUserCartsLoading() : false
 
   return (
     <Link

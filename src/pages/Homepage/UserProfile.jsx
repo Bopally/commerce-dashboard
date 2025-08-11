@@ -18,12 +18,8 @@ const UserProfile = ({ handlers }) => {
   const [userError, setUserError] = useState(null)
 
   // Get cart data from lifted state via props
-  const {
-    getUserCarts,
-    isUserCartsLoading,
-    getUserCartsError,
-    loadUserCarts
-  } = handlers || {}
+  const { getUserCarts, isUserCartsLoading, getUserCartsError, loadUserCarts } =
+    handlers || {}
 
   // Load specific user data
   useEffect(() => {
@@ -33,10 +29,10 @@ const UserProfile = ({ handlers }) => {
         setUserError(null)
         const data = await fetchData(`users/${id}`)
         setUser(data)
-        
+
         // Also load user carts using lifted state
         if (loadUserCarts) {
-          loadUserCarts(id)
+          loadUserCarts()
         }
       } catch (err) {
         setUserError(err.message)
@@ -52,8 +48,8 @@ const UserProfile = ({ handlers }) => {
 
   // Get carts data from lifted state
   const carts = getUserCarts ? getUserCarts(id) : []
-  const cartsLoading = isUserCartsLoading ? isUserCartsLoading(id) : false
-  const cartsError = getUserCartsError ? getUserCartsError(id) : null
+  const cartsLoading = isUserCartsLoading ? isUserCartsLoading() : false
+  const cartsError = getUserCartsError ? getUserCartsError() : null
 
   // Loading state
   if (userLoading) {
