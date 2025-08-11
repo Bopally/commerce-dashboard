@@ -1,6 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { fetchData } from '../../services/api.service'
 import CartCard from '../../components/CartCard'
 import CartSummary from '../../components/CartSummary'
 import {
@@ -18,7 +17,7 @@ const UserProfile = ({ handlers }) => {
   const [userError, setUserError] = useState(null)
 
   // Get data from lifted state via props
-  const { getUserCarts, isUserCartsLoading, getUserCartsError, loadUserCarts, getUser, users, usersLoading: allUsersLoading } =
+  const { getUserCarts, isUserCartsLoading, getUserCartsError, loadUserCarts, getUser, usersLoading: allUsersLoading } =
     handlers || {}
 
   // Get user from already loaded users (avoid duplicate API calls)
