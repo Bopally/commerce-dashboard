@@ -7,6 +7,7 @@ import {
   EmptyState,
   ProductsLoadingSkeleton,
 } from '../../components/LoadingStates'
+import clsx from 'clsx'
 
 export const UsersList = () => {
   const { users, loading, error } = useUsers()
@@ -14,7 +15,7 @@ export const UsersList = () => {
   // Loading state with skeleton
   if (loading) {
     return (
-      <div className="users-container">
+      <div className={clsx("users-container")}>
         <h1>👥 Our Users 👥</h1>
         <ProductsLoadingSkeleton />
       </div>
@@ -24,7 +25,7 @@ export const UsersList = () => {
   // Error state with retry functionality
   if (error) {
     return (
-      <div className="users-container">
+      <div className={clsx("users-container")}>
         <h1>👥 Our Users 👥</h1>
         <ErrorState error={error} title="Failed to load users" />
       </div>
@@ -34,7 +35,7 @@ export const UsersList = () => {
   // Empty state (no users found)
   if (users.length === 0) {
     return (
-      <div className="users-container">
+      <div className={clsx("users-container")}>
         <h1>👥 Our Users 👥</h1>
         <EmptyState
           icon="👤"
@@ -47,9 +48,9 @@ export const UsersList = () => {
 
   // Success state - render users
   return (
-    <div className="users-container">
+    <div className={clsx("users-container")}>
       <h1>👥 Our Users ({users.length}) 👥</h1>
-      <div className="users-grid">
+      <div className={clsx("users-grid")}>
         {users.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
