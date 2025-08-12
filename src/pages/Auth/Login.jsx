@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../../services/api.service.jsx'
 import './Login.css'
 
 const Login = () => {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [loginResult, setLoginResult] = useState(null)
   const [error, setError] = useState(null)
@@ -36,6 +38,9 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          ← Homepage
+        </button>
         <h2>Login</h2>
 
         <div className="form-group">
