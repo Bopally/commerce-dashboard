@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../../services/api.service.jsx'
 import './Login.css'
@@ -11,22 +11,42 @@ const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  useEffect(() => {
+    if (error || loginResult) {
+      const timer = setTimeout(() => {
+        setError(null)
+        setLoginResult(null)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [error, loginResult])
+
+  const closeMessage = () => {
+    setError(null)
+    setLoginResult(null)
+  }
+
   const handleLogin = async () => {
     if (!username || !password) {
       setError('Please enter both username and password')
+      setLoginResult(null)
       return
     }
 
     setIsLoading(true)
     setError(null)
+    setLoginResult(null)
     try {
       const result = await loginUser(username, password)
       setLoginResult(result)
+      setError(null)
     } catch (err) {
+      setLoginResult(null)
       if (err.message.includes('400')) {
-        setError(' ❌​ Invalid username or password, try again ✍🏼​')
+        setError('Invalid username or password, try again ✍🏼​')
       } else if (err.message.includes('401')) {
-        setError('❌​ Authentication failed, try again ✍🏼​')
+        setError('Authentication failed, try again ✍🏼​')
       } else {
         setError('Login failed. Please try again later')
       }
@@ -73,12 +93,18 @@ const Login = () => {
 
         {error && (
           <div className="error-message">
+            <button className="close-button" onClick={closeMessage}>
+              ✖️​
+            </button>
             <p>{error}</p>
           </div>
         )}
 
         {loginResult && (
           <div className="success-message">
+            <button className="close-button" onClick={closeMessage}>
+              ✖️​
+            </button>
             <h3>Login Successful!</h3>
             <div className="user-info">
               <p>
