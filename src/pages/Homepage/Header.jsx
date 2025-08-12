@@ -21,6 +21,9 @@ function Homepage() {
         <Link to="/commerce-dashboard/favorites" className="nav-link">
           💗 Favorites ({favorites.length})
         </Link>
+        <Link to="/auth/login" className="nav-link">
+          🔐 Login
+        </Link>
       </nav>
       <Outlet />
     </div>
