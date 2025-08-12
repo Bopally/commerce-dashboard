@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { fetchData } from '../../services/api.service'
 import CartCard from '../../components/CartCard'
 import CartSummary from '../../components/CartSummary'
 import {
@@ -12,16 +13,15 @@ import './UserProfile.css'
 /**
  * @typedef {import('../../types/interfaces.js').User} User
  * @typedef {import('../../types/interfaces.js').Cart} Cart
- * @typedef {import('../../types/interfaces.js').UserHandlers} UserHandlers
  */
 
 /**
  * UserProfile component displays detailed information about a user and their shopping carts
  * @param {Object} props
- * @param {UserHandlers} props.handlers - Handler functions and data from parent component
  * @returns {JSX.Element}
  */
-const UserProfile = ({ handlers }) => {
+
+const UserProfile = () => {
   const { id } = useParams()
   /** @type {['detailed' | 'summary', function]} */
   const [viewMode, setViewMode] = useState('detailed')
@@ -32,45 +32,44 @@ const UserProfile = ({ handlers }) => {
   /** @type {[string | null, function]} */
   const [userError, setUserError] = useState(null)
 
-  // Get data from lifted state via props
-  const { getUserCarts, isUserCartsLoading, getUserCartsError, loadUserCarts, getUser, usersLoading: allUsersLoading } =
-    handlers || {}
+  /** @type {[Cart[], function]} */
+  const [userCarts, setUserCarts] = useState([])
+  /** @type {[boolean, function]} */
+  const [userCartsLoading, setUserCartsLoading] = useState(false)
+  /** @type {[string | null, function]} */
+  const [userCartsError, setUserCartsError] = useState(null)
 
-  // Get user from already loaded users (avoid duplicate API calls)
+  // Load users data
   useEffect(() => {
-    if (!id) return
-
-    // Wait for users to be loaded if still loading
-    if (allUsersLoading) {
-      setUserLoading(true)
-      return
-    }
-
-    // Get user from already loaded users
-    const foundUser = getUser ? getUser(id) : null
-    
-    if (foundUser) {
-      setUser(foundUser)
-      setUserError(null)
-      
-      // Load user carts using lifted state
-      if (loadUserCarts) {
-        loadUserCarts()
+    const loadUser = async () => {
+      try {
+        const data = await fetchData(`users/${id}`)
+        setUser(data)
+      } catch (err) {
+        setUserError(err.message)
+      } finally {
+        setUserLoading(false)
       }
-    } else {
-      setUserError('User not found')
     }
-    
-    setUserLoading(false)
-  }, [id, getUser, allUsersLoading, loadUserCarts])
 
-  // Get carts data from lifted state
-  /** @type {Cart[]} */
-  const carts = getUserCarts ? getUserCarts(id) : []
-  /** @type {boolean} */
-  const cartsLoading = isUserCartsLoading ? isUserCartsLoading() : false
-  /** @type {string | null} */
-  const cartsError = getUserCartsError ? getUserCartsError() : null
+    loadUser()
+  }, [])
+
+  useEffect(() => {
+    const loadUserCarts = async () => {
+      try {
+        setUserCartsLoading(true)
+        setUserCartsError(null)
+        const data = await fetchData(`carts/user/${id}`)
+        setUserCarts(data.carts)
+      } catch (err) {
+        setUserCartsError(err.message)
+      } finally {
+        setUserCartsLoading(false)
+      }
+    }
+    loadUserCarts()
+  }, [])
 
   // Loading state
   if (userLoading) {
@@ -169,13 +168,14 @@ const UserProfile = ({ handlers }) => {
             </div>
           </div>
         </div>
-
         {/* User Carts Section */}
         <div className="user-carts-section">
           <div className="carts-header">
-            <h2 className="carts-title">🛒 Shopping Carts ({carts.length})</h2>
+            <h2 className="carts-title">
+              🛒 Shopping Carts ({userCarts.length})
+            </h2>
 
-            {carts.length > 0 && (
+            {userCarts.length > 0 && (
               <div className="view-toggle">
                 <button
                   className={`toggle-btn ${
@@ -197,11 +197,14 @@ const UserProfile = ({ handlers }) => {
             )}
           </div>
 
-          {cartsLoading ? (
+          {userCartsLoading ? (
             <LoadingSpinner message="Loading user carts..." />
-          ) : cartsError ? (
-            <ErrorState error={cartsError} title="Failed to load user carts" />
-          ) : carts.length === 0 ? (
+          ) : userCartsError ? (
+            <ErrorState
+              error={userCartsError}
+              title="Failed to load user carts"
+            />
+          ) : userCarts.length === 0 ? (
             <EmptyState
               icon="🛒"
               title="No carts found"
@@ -213,7 +216,7 @@ const UserProfile = ({ handlers }) => {
                 viewMode === 'summary' ? 'carts-summary-grid' : 'carts-grid'
               }
             >
-              {carts.map((cart) =>
+              {userCarts.map((cart) =>
                 viewMode === 'summary' ? (
                   <CartSummary key={cart.id} cart={cart} />
                 ) : (

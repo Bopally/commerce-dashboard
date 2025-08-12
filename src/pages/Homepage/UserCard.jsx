@@ -1,5 +1,7 @@
 import './UserCard.css'
 import { Link } from 'react-router-dom'
+import { fetchData } from '../../services/api.service'
+import { useState, useEffect } from 'react'
 
 /**
  * @typedef {import('../../types/interfaces.js').User} User
@@ -13,15 +15,24 @@ import { Link } from 'react-router-dom'
  * @param {UserHandlers} props.handlers - Handler functions from parent component
  * @returns {JSX.Element}
  */
-function UserCard({ user, handlers }) {
-  // Get cart data from lifted state via props (no individual loading needed)
-  const { 
-    getUserCartCount, 
-    isUserCartsLoading 
-  } = handlers || {}
+function UserCard({ user }) {
+  const [userCarts, setUserCarts] = useState([])
+  const [userCartsLoading, setUserCartsLoading] = useState(true)
+  const [userCartsError, setUserCartsError] = useState(null)
 
-  const cartCount = getUserCartCount ? getUserCartCount(user.id) : 0
-  const cartsLoading = isUserCartsLoading ? isUserCartsLoading() : false
+  useEffect(() => {
+    const loadUserCarts = async () => {
+      try {
+        const data = await fetchData(`carts/user/${user.id}`)
+        setUserCarts(data.carts)
+      } catch (err) {
+        setUserCartsError(err.message)
+      } finally {
+        setUserCartsLoading(false)
+      }
+    }
+    loadUserCarts()
+  }, [])
 
   return (
     <Link
@@ -42,7 +53,12 @@ function UserCard({ user, handlers }) {
             <p className="user-email">{user.email}</p>
 
             <p className="user-cart-count">
-              🛒 {cartsLoading ? 'Loading...' : `${cartCount} ${cartCount === 1 ? 'cart' : 'carts'}`}
+              🛒{' '}
+              {userCartsLoading
+                ? 'Loading...'
+                : `${userCarts.length} ${
+                    userCarts.length === 1 ? 'cart' : 'carts'
+                  }`}
             </p>
           </div>
         </div>
