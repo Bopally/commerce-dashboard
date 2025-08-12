@@ -40,7 +40,7 @@ importers:
         specifier: ^4.4.1
         version: 4.4.1(vite@6.3.5(@types/node@24.0.15))
       eslint:
-        specifier: ^9.25.0
+        specifier: ^9.27.0
         version: 9.27.0
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
