@@ -18,7 +18,6 @@ import { useState, useEffect } from 'react'
 function UserCard({ user }) {
   const [userCarts, setUserCarts] = useState([])
   const [userCartsLoading, setUserCartsLoading] = useState(true)
-  const [userCartsError, setUserCartsError] = useState(null)
 
   useEffect(() => {
     const loadUserCarts = async () => {
@@ -26,13 +25,13 @@ function UserCard({ user }) {
         const data = await fetchData(`carts/user/${user.id}`)
         setUserCarts(data.carts)
       } catch (err) {
-        setUserCartsError(err.message)
+        console.error('Failed to load user carts:', err.message)
       } finally {
         setUserCartsLoading(false)
       }
     }
     loadUserCarts()
-  }, [])
+  }, [user.id])
 
   return (
     <Link

@@ -53,7 +53,7 @@ const UserProfile = () => {
     }
 
     loadUser()
-  }, [])
+  }, [id])
 
   useEffect(() => {
     const loadUserCarts = async () => {
@@ -69,7 +69,7 @@ const UserProfile = () => {
       }
     }
     loadUserCarts()
-  }, [])
+  }, [id])
 
   // Loading state
   if (userLoading) {

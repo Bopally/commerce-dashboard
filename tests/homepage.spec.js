@@ -32,7 +32,7 @@ test.describe('Homepage', () => {
     await expect(homePage.favoritesLink).toContainText('💗 Favorites (0)')
   })
 
-  test('should load and display products', async ({ page }) => {
+  test('should load and display products', async () => {
     // Wait for products to load
     await homePage.waitForPageLoad()
 

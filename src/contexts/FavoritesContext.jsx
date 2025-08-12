@@ -5,8 +5,8 @@ const FAVORITES_STORAGE_KEY = 'favoriteProducts'
 // Create the context
 const FavoritesContext = createContext()
 
-// Custom hook to use the favorites context
-export const useFavorites = () => {
+// Custom hook to use the favorites context  
+const useFavorites = () => {
   const context = useContext(FavoritesContext)
   if (!context) {
     throw new Error('useFavorites must be used within a FavoritesProvider')
@@ -15,7 +15,7 @@ export const useFavorites = () => {
 }
 
 // Favorites provider component
-export const FavoritesProvider = ({ children }) => {
+const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -150,3 +150,5 @@ export const FavoritesProvider = ({ children }) => {
     </FavoritesContext.Provider>
   )
 }
+
+export { useFavorites, FavoritesProvider }
