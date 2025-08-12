@@ -10,6 +10,7 @@ import FavoritesList from './pages/Homepage/FavoritesList.jsx'
 import { ProductList } from './pages/Homepage/ProductList.jsx'
 import { UsersList } from './pages/Homepage/UsersList.jsx'
 import UserProfile from './pages/Homepage/UserProfile.jsx'
+import Login from './pages/Auth/Login.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')).render(
             path="/"
             element={<Navigate replace to="/commerce-dashboard" />}
           />
+          <Route path="auth/login" element={<Login />} />
           <Route path="commerce-dashboard" element={<Header />}>
             <Route index element={<ProductList />} />
             <Route path="products/:id" element={<ProductDetails />} />
