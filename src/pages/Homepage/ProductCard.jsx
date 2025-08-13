@@ -32,7 +32,7 @@ function ProductCard({ product }) {
         <p className="product-category">{product.category}</p>
         <button
           className={clsx('favorite-btn', {
-            'favorite-active': isFavorite(product.id)
+            'favorite-active': isFavorite(product.id),
           })}
           onClick={handleFavoriteClick}
           aria-label={
