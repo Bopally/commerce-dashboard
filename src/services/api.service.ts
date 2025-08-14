@@ -36,3 +36,27 @@ export const loginUser = async (username: string, password: string) => {
     throw error
   }
 }
+
+export const updateProduct = async (
+  id: number,
+  productData: { title: string; price: number }
+) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(productData),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('Error updating product:', error)
+    throw error
+  }
+}
