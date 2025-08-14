@@ -45,23 +45,26 @@ const Login = () => {
       // Store JWT token and user info in localStorage
       if (result.accessToken) {
         localStorage.setItem('authToken', result.accessToken)
-        
+
         // Determine user role based on username or other criteria
         const isAdmin = ['emilys', 'admin'].includes(result.username)
-        
-        localStorage.setItem('userInfo', JSON.stringify({
-          firstName: result.firstName,
-          lastName: result.lastName,
-          username: result.username,
-          email: result.email,
-          role: isAdmin ? 'admin' : 'user',
-          id: result.id
-        }))
-        
+
+        localStorage.setItem(
+          'userInfo',
+          JSON.stringify({
+            firstName: result.firstName,
+            lastName: result.lastName,
+            username: result.username,
+            email: result.email,
+            role: isAdmin ? 'admin' : 'user',
+            id: result.id,
+          })
+        )
+
         // Redirect based on role
         setTimeout(() => {
           if (isAdmin) {
-            navigate('/admin')
+            navigate('/commerce-dashboard/admin')
           } else {
             navigate('/commerce-dashboard')
           }
@@ -110,19 +113,33 @@ const Login = () => {
         </div>
 
         <div className="login-instructions">
-          <p>📝 <strong>Test Credentials:</strong></p>
-          
+          <p>
+            📝 <strong>Test Credentials:</strong>
+          </p>
+
           <div className="credentials-section">
-            <p><strong>👑 Admin Access:</strong></p>
-            <p><strong>Username:</strong> emilys</p>
-            <p><strong>Password:</strong> emilyspass</p>
+            <p>
+              <strong>👑 Admin Access:</strong>
+            </p>
+            <p>
+              <strong>Username:</strong> emilys
+            </p>
+            <p>
+              <strong>Password:</strong> emilyspass
+            </p>
             <small>Access to admin panel and product management</small>
           </div>
-          
+
           <div className="credentials-section">
-            <p><strong>👤 Regular User:</strong></p>
-            <p><strong>Username:</strong> michaelw</p>
-            <p><strong>Password:</strong> michaelwpass</p>
+            <p>
+              <strong>👤 Regular User:</strong>
+            </p>
+            <p>
+              <strong>Username:</strong> michaelw
+            </p>
+            <p>
+              <strong>Password:</strong> michaelwpass
+            </p>
             <small>Access to personal carts and user features</small>
           </div>
         </div>

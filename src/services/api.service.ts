@@ -60,3 +60,32 @@ export const updateProduct = async (
     throw error
   }
 }
+
+export const createProduct = async (productData: {
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  brand: string;
+  stock: number;
+  thumbnail?: string;
+}) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/add`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(productData),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('Error creating product:', error)
+    throw error
+  }
+}

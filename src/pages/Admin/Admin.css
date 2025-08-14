@@ -122,10 +122,33 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
 .products-management h2 {
   color: var(--text-primary);
-  margin-top: 0;
-  margin-bottom: 32px;
+  margin: 0;
+}
+
+.add-product-btn {
+  background-color: var(--success-color);
+  color: var(--white);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.add-product-btn:hover {
+  background-color: #218838;
+  transform: var(--translate-up-sm);
 }
 
 .loading, .error {
@@ -156,7 +179,7 @@
 
 .table-header {
   display: grid;
-  grid-template-columns: 60px 1fr 120px 150px;
+  grid-template-columns: 1fr 120px 150px;
   gap: 16px;
   padding: 16px;
   background-color: var(--background-color);
@@ -167,7 +190,7 @@
 
 .table-row {
   display: grid;
-  grid-template-columns: 60px 1fr 120px 150px;
+  grid-template-columns: 1fr 120px 150px;
   gap: 16px;
   padding: 16px;
   border-bottom: var(--border-thin) solid var(--border-color);
@@ -261,6 +284,26 @@
 .admin-actions h3 {
   color: var(--text-primary);
   margin-bottom: 16px;
+}
+
+/* Responsive table adjustments */
+@media (max-width: 768px) {
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr 80px 100px;
+    gap: 8px;
+    padding: 12px 8px;
+  }
+  
+  .edit-input {
+    padding: 4px;
+    font-size: 12px;
+  }
+  
+  .edit-btn, .save-btn, .cancel-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
 }
 
 .admin-action-btn {

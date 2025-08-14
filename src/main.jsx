@@ -25,13 +25,13 @@ createRoot(document.getElementById('root')).render(
             element={<Navigate replace to="/commerce-dashboard" />}
           />
           <Route path="auth/login" element={<Login />} />
-          <Route 
-            path="admin" 
+          <Route
+            path="/commerce-dashboard/admin"
             element={
               <ProtectedRoute>
                 <Admin />
               </ProtectedRoute>
-            } 
+            }
           />
           <Route path="commerce-dashboard" element={<Header />}>
             <Route index element={<ProductList />} />

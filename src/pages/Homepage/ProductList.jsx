@@ -28,12 +28,22 @@ export const ProductList = () => {
       
       // Apply local modifications from localStorage (from admin edits)
       const localModifications = JSON.parse(localStorage.getItem('productModifications') || '{}')
+      
+      // Add any locally created products that aren't in the API response
+      const localProducts = Object.values(localModifications).filter(product => 
+        product.id >= 1000 && !fetchedProducts.find(p => p.id === product.id)
+      )
+      
+      // Apply modifications to existing products
       fetchedProducts = fetchedProducts.map(product => {
         if (localModifications[product.id]) {
           return { ...product, ...localModifications[product.id] }
         }
         return product
       })
+      
+      // Add local products to the end of the list
+      fetchedProducts = [...fetchedProducts, ...localProducts]
       
       setProducts(fetchedProducts)
     } catch (err) {
@@ -45,6 +55,40 @@ export const ProductList = () => {
 
   useEffect(() => {
     fetchProducts()
+    
+    // Listen for storage changes (when admin adds products)
+    const handleStorageChange = (e) => {
+      if (e.key === 'productModifications') {
+        // Reset the ref to allow re-fetching
+        productsLoadedRef.current = false
+        fetchProducts()
+      }
+    }
+    
+    // Listen for visibility changes (when returning from admin panel)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        // Reset the ref to allow re-fetching when page becomes visible
+        productsLoadedRef.current = false
+        fetchProducts()
+      }
+    }
+    
+    // Listen for custom products updated event from admin panel
+    const handleProductsUpdated = () => {
+      productsLoadedRef.current = false
+      fetchProducts()
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('productsUpdated', handleProductsUpdated)
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('productsUpdated', handleProductsUpdated)
+    }
   }, [])
 
   // Loading state with skeleton
