@@ -10,6 +10,7 @@ import FavoritesList from './pages/Homepage/FavoritesList.jsx'
 import { ProductList } from './pages/Homepage/ProductList.jsx'
 import { UsersList } from './pages/Homepage/UsersList.jsx'
 import UserProfile from './pages/Homepage/UserProfile.jsx'
+import MyCarts from './pages/Homepage/MyCarts.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Admin from './pages/Admin/Admin.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
@@ -42,6 +43,7 @@ createRoot(document.getElementById('root')).render(
               path="favorites/products/:id"
               element={<FavoriteProductDetails />}
             />
+            <Route path="my-carts" element={<MyCarts />} />
           </Route>
         </Routes>
       </FavoritesProvider>
