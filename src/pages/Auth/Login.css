@@ -3,15 +3,15 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--background-color);
 }
 
 .login-card {
   background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md) rgba(0, 0, 0, 0.1);
+  max-width: var(--max-width-sm);
   width: 100%;
 }
 
@@ -19,60 +19,60 @@
   background: none;
   border: none;
   color: #000;
-  font-size: 0.9rem;
+  font-size: var(--font-sm);
   cursor: pointer;
-  padding: 0.5rem 0;
-  margin-bottom: 1rem;
+  padding: var(--spacing-sm) 0;
+  margin-bottom: var(--spacing-md);
   text-align: left;
 }
 
 .back-button:hover {
-  color: #333;
+  color: var(--text-primary);
 }
 
 .login-card h2 {
   text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-primary);
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
 }
 
 .form-input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: 12px;
+  border: var(--border-thin) solid var(--border-color);
+  border-radius: var(--radius-xs);
+  font-size: var(--font-md);
   box-sizing: border-box;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 .login-button {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #007bff;
-  color: white;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: var(--white);
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: var(--radius-xs);
+  font-size: var(--font-md);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .login-button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: var(--secondary-color);
 }
 
 .login-button:disabled {
-  background-color: #6c757d;
+  background-color: var(--text-secondary);
   cursor: not-allowed;
 }
 
@@ -80,12 +80,12 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 1rem 1.5rem;
+  padding: var(--spacing-md) var(--spacing-lg);
   background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 8px;
+  border: var(--border-thin) solid #f5c6cb;
+  border-radius: var(--radius-md);
   color: #721c24;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg) rgba(0, 0, 0, 0.15);
   z-index: 1000;
   max-width: 300px;
   animation: slideIn 0.3s ease-out;
@@ -95,24 +95,24 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 1rem 1.5rem;
+  padding: var(--spacing-md) var(--spacing-lg);
   background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  border-radius: 8px;
+  border: var(--border-thin) solid #c3e6cb;
+  border-radius: var(--radius-md);
   color: #155724;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg) rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  max-width: 400px;
+  max-width: var(--max-width-sm);
   animation: slideIn 0.3s ease-out;
 }
 
 .close-button {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: var(--font-xl);
   cursor: pointer;
   color: inherit;
   width: 24px;
@@ -120,7 +120,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
 }
 
 .close-button:hover {
@@ -140,11 +140,38 @@
 
 .success-message h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
 }
 
 .user-info p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
+  margin: var(--spacing-xs) 0;
+  font-size: var(--font-sm);
   word-break: break-all;
+}
+
+.login-instructions {
+  background-color: var(--background-color);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-md) 0;
+  border-left: var(--border-thick) solid var(--primary-color);
+}
+
+.credentials-section {
+  margin: var(--spacing-md) 0;
+  padding: 12px;
+  background: var(--white);
+  border-radius: var(--radius-xs);
+  border-left: 3px solid var(--success-color);
+}
+
+.credentials-section:first-of-type {
+  border-left-color: var(--error-color);
+}
+
+.credentials-section small {
+  color: var(--text-secondary);
+  font-style: italic;
+  display: block;
+  margin-top: var(--spacing-xs);
 }

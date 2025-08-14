@@ -42,12 +42,29 @@ const Login = () => {
       setLoginResult(result)
       setError(null)
 
-      // Store JWT token in localStorage
+      // Store JWT token and user info in localStorage
       if (result.accessToken) {
         localStorage.setItem('authToken', result.accessToken)
-        // Redirect to admin after successful login
+        
+        // Determine user role based on username or other criteria
+        const isAdmin = ['emilys', 'admin'].includes(result.username)
+        
+        localStorage.setItem('userInfo', JSON.stringify({
+          firstName: result.firstName,
+          lastName: result.lastName,
+          username: result.username,
+          email: result.email,
+          role: isAdmin ? 'admin' : 'user',
+          id: result.id
+        }))
+        
+        // Redirect based on role
         setTimeout(() => {
-          navigate('/admin')
+          if (isAdmin) {
+            navigate('/admin')
+          } else {
+            navigate('/commerce-dashboard')
+          }
         }, 2000) // Wait 2 seconds to show success message
       }
     } catch (err) {
@@ -90,6 +107,24 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        </div>
+
+        <div className="login-instructions">
+          <p>📝 <strong>Test Credentials:</strong></p>
+          
+          <div className="credentials-section">
+            <p><strong>👑 Admin Access:</strong></p>
+            <p><strong>Username:</strong> emilys</p>
+            <p><strong>Password:</strong> emilyspass</p>
+            <small>Access to admin panel and product management</small>
+          </div>
+          
+          <div className="credentials-section">
+            <p><strong>👤 Regular User:</strong></p>
+            <p><strong>Username:</strong> michaelw</p>
+            <p><strong>Password:</strong> michaelwpass</p>
+            <small>Access to personal carts and user features</small>
+          </div>
         </div>
 
         <button
