@@ -41,6 +41,15 @@ const Login = () => {
       const result = await loginUser(username, password)
       setLoginResult(result)
       setError(null)
+
+      // Store JWT token in localStorage
+      if (result.accessToken) {
+        localStorage.setItem('authToken', result.accessToken)
+        // Redirect to admin after successful login
+        setTimeout(() => {
+          navigate('/admin')
+        }, 2000) // Wait 2 seconds to show success message
+      }
     } catch (err) {
       setLoginResult(null)
       if (err.message.includes('400')) {

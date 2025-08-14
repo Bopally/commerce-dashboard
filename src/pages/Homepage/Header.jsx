@@ -24,6 +24,9 @@ function Homepage() {
         <Link to="/auth/login" className="nav-link">
           🔐 Login
         </Link>
+        <Link to="/admin" className="nav-link">
+          ⚙️ Admin
+        </Link>
       </nav>
       <Outlet />
     </div>

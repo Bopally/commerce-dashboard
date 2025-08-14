@@ -11,6 +11,8 @@ import { ProductList } from './pages/Homepage/ProductList.jsx'
 import { UsersList } from './pages/Homepage/UsersList.jsx'
 import UserProfile from './pages/Homepage/UserProfile.jsx'
 import Login from './pages/Auth/Login.jsx'
+import Admin from './pages/Admin/Admin.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -22,6 +24,14 @@ createRoot(document.getElementById('root')).render(
             element={<Navigate replace to="/commerce-dashboard" />}
           />
           <Route path="auth/login" element={<Login />} />
+          <Route 
+            path="admin" 
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="commerce-dashboard" element={<Header />}>
             <Route index element={<ProductList />} />
             <Route path="products/:id" element={<ProductDetails />} />
