@@ -24,7 +24,18 @@ export const ProductList = () => {
       setLoading(true)
       setError('')
       const data = await fetchData('products')
-      setProducts(data.products || [])
+      let fetchedProducts = data.products || []
+      
+      // Apply local modifications from localStorage (from admin edits)
+      const localModifications = JSON.parse(localStorage.getItem('productModifications') || '{}')
+      fetchedProducts = fetchedProducts.map(product => {
+        if (localModifications[product.id]) {
+          return { ...product, ...localModifications[product.id] }
+        }
+        return product
+      })
+      
+      setProducts(fetchedProducts)
     } catch (err) {
       setError(err.message)
     } finally {
