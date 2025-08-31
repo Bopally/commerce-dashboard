@@ -1,91 +1,81 @@
 const BASE_URL = 'https://dummyjson.com'
+// To Do: rework the api service: could be centralize the calls
 
-export const fetchData = async (endpoint: string) => {
+const apiAction = async (url, options = {}, errorOptions = {}) => {
   try {
-    const response = await fetch(`${BASE_URL}/${endpoint}`)
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...options,
+    })
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     return await response.json()
   } catch (error) {
-    console.error('Error fetching data:', error)
+    console.error(errorOptions.message, error)
     throw error
   }
 }
 
+export const fetchData = async (endpoint: string) => {
+  return await apiAction(
+    `${BASE_URL}/${endpoint}`,
+    {},
+    { message: 'Error fetching data:' }
+  )
+}
+
 export const loginUser = async (username: string, password: string) => {
-  try {
-    const response = await fetch(`${BASE_URL}/auth/login`, {
+  return await apiAction(
+    `${BASE_URL}/auth/login`,
+    {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         username,
         password,
       }),
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    },
+    {
+      message: 'Error logging in',
     }
-
-    return await response.json()
-  } catch (error) {
-    console.error('Error during login:', error)
-    throw error
-  }
+  )
 }
 
 export const updateProduct = async (
   id: number,
   productData: { title: string; price: number }
 ) => {
-  try {
-    const response = await fetch(`${BASE_URL}/products/${id}`, {
+  return await apiAction(
+    `${BASE_URL}/products/${id}`,
+    {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(productData),
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    },
+    {
+      message: 'Error updating product:',
     }
-
-    return await response.json()
-  } catch (error) {
-    console.error('Error updating product:', error)
-    throw error
-  }
+  )
 }
 
 export const createProduct = async (productData: {
-  title: string;
-  description: string;
-  price: number;
-  category: string;
-  brand: string;
-  stock: number;
-  thumbnail?: string;
+  title: string
+  description: string
+  price: number
+  category: string
+  brand: string
+  stock: number
+  thumbnail?: string
 }) => {
-  try {
-    const response = await fetch(`${BASE_URL}/products/add`, {
+  return await apiAction(
+    `${BASE_URL}/products/add`,
+    {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(productData),
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    },
+    {
+      message: 'Error creating product:',
     }
-
-    return await response.json()
-  } catch (error) {
-    console.error('Error creating product:', error)
-    throw error
-  }
+  )
 }
