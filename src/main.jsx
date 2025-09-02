@@ -13,7 +13,7 @@ import UserProfile from './pages/Homepage/UserProfile.jsx'
 import MyCarts from './pages/Homepage/MyCarts.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Admin from './pages/Admin/Admin.jsx'
-import ProtectedRoute from './components/ProtectedRoute.jsx'
+import AdminProtectedRoute from './components/AdminProtectedRoute.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -28,12 +28,12 @@ createRoot(document.getElementById('root')).render(
           <Route
             path="/commerce-dashboard/admin"
             element={
-              <ProtectedRoute>
+              <AdminProtectedRoute>
                 <Admin />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             }
           />
-          <Route path="commerce-dashboard" element={<Header />}>
+          <Route path="/commerce-dashboard" element={<Header />}>
             <Route index element={<ProductList />} />
             <Route path="products/:id" element={<ProductDetails />} />
             <Route path="users" element={<UsersList />} />
