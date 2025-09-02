@@ -17,7 +17,7 @@ function ProductCard({ product }) {
       <div className="product-card" key={product.id}>
         <div className="image-hover-container">
           <img
-            src={product.thumbnail}
+            src={product.thumbnail || null}
             alt={product.title}
             className="product-image"
           />
