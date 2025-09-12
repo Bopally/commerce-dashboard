@@ -11,10 +11,28 @@ export const useProduct = (id) => {
       try {
         setLoading(true)
         setError(null)
+
+        // First check if it's a locally stored product (ID >= 1000)
+        const localModifications = JSON.parse(
+          localStorage.getItem('productModifications') || '{}'
+        )
+
+        if (localModifications[id]) {
+          setProduct(localModifications[id])
+          return
+        }
+
+        // If not local, fetch from API
         const data = await fetchData(`products/${id}`)
         setProduct(data)
       } catch (err) {
-        setError(err.message)
+        if (parseInt(id) >= 1000) {
+          setError(
+            'This is a fake product that was added locally but cannot be retrieved as it uses a public API'
+          )
+        } else {
+          setError(err.message)
+        }
       } finally {
         setLoading(false)
       }
