@@ -62,7 +62,7 @@ function Homepage() {
           ) : (
             <>
               {userRole === 'admin' && (
-                <Link to="/admin" className="nav-link">
+                <Link to="/commerce-dashboard/admin" className="nav-link">
                   ⚙️ Admin Panel
                 </Link>
               )}
