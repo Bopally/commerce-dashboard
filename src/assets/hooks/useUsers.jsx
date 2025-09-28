@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchData } from '../../services/api.service'
+import { usersApi } from '../../services/api.service'
 
 export const useUsers = () => {
   const [users, setUsers] = useState([])
@@ -11,7 +11,8 @@ export const useUsers = () => {
       try {
         setLoading(true)
         setError(null)
-        const data = await fetchData('users')
+        // Using the new centralized API
+        const data = await usersApi.getAll()
         setUsers(data.users || [])
       } catch (err) {
         setError(err.message)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './ProductList.css'
 import ProductCard from './ProductCard'
-import { fetchData } from '../../services/api.service'
+import { productsApi } from '../../services/api.service'
 import {
   ErrorState,
   EmptyState,
@@ -23,28 +23,33 @@ export const ProductList = () => {
     try {
       setLoading(true)
       setError('')
-      const data = await fetchData('products')
+      // Using the new centralized API
+      const data = await productsApi.getAll()
       let fetchedProducts = data.products || []
-      
+
       // Apply local modifications from localStorage (from admin edits)
-      const localModifications = JSON.parse(localStorage.getItem('productModifications') || '{}')
-      
-      // Add any locally created products that aren't in the API response
-      const localProducts = Object.values(localModifications).filter(product => 
-        product.id >= 1000 && !fetchedProducts.find(p => p.id === product.id)
+      const localModifications = JSON.parse(
+        localStorage.getItem('productModifications') || '{}'
       )
-      
+
+      // Add any locally created products that aren't in the API response
+      const localProducts = Object.values(localModifications).filter(
+        (product) =>
+          product.id >= 1000 &&
+          !fetchedProducts.find((p) => p.id === product.id)
+      )
+
       // Apply modifications to existing products
-      fetchedProducts = fetchedProducts.map(product => {
+      fetchedProducts = fetchedProducts.map((product) => {
         if (localModifications[product.id]) {
           return { ...product, ...localModifications[product.id] }
         }
         return product
       })
-      
+
       // Add local products to the end of the list
       fetchedProducts = [...fetchedProducts, ...localProducts]
-      
+
       setProducts(fetchedProducts)
     } catch (err) {
       setError(err.message)
@@ -55,7 +60,7 @@ export const ProductList = () => {
 
   useEffect(() => {
     fetchProducts()
-    
+
     // Listen for storage changes (when admin adds products)
     const handleStorageChange = (e) => {
       if (e.key === 'productModifications') {
@@ -64,7 +69,7 @@ export const ProductList = () => {
         fetchProducts()
       }
     }
-    
+
     // Listen for visibility changes (when returning from admin panel)
     const handleVisibilityChange = () => {
       if (!document.hidden) {
@@ -73,17 +78,17 @@ export const ProductList = () => {
         fetchProducts()
       }
     }
-    
+
     // Listen for custom products updated event from admin panel
     const handleProductsUpdated = () => {
       productsLoadedRef.current = false
       fetchProducts()
     }
-    
+
     window.addEventListener('storage', handleStorageChange)
     document.addEventListener('visibilitychange', handleVisibilityChange)
     window.addEventListener('productsUpdated', handleProductsUpdated)
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
@@ -94,7 +99,7 @@ export const ProductList = () => {
   // Loading state with skeleton
   if (loading) {
     return (
-      <div className={clsx("products-container", "loading-state")}>
+      <div className={clsx('products-container', 'loading-state')}>
         <h1>✨ Our products ✨</h1>
         <ProductsLoadingSkeleton />
       </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchData } from '../../services/api.service'
+import { cartsApi } from '../../services/api.service'
 
 export const useUserCarts = (userId) => {
   const [carts, setCarts] = useState([])
@@ -11,7 +11,8 @@ export const useUserCarts = (userId) => {
       try {
         setLoading(true)
         setError(null)
-        const data = await fetchData(`carts/user/${userId}`)
+        // Using the new centralized API
+        const data = await cartsApi.getUserCarts(userId)
         setCarts(data.carts || [])
       } catch (err) {
         setError(err.message)

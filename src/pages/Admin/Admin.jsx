@@ -1,10 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import {
-  fetchData,
-  updateProduct,
-  createProduct,
-} from '../../services/api.service'
+import { productsApi } from '../../services/api.service'
 import ProductForm from '../../components/ProductForm'
 import './Admin.css'
 
@@ -39,7 +35,8 @@ const Admin = () => {
     try {
       setLoading(true)
       setError('')
-      const data = await fetchData('products')
+      // Using the new centralized API
+      const data = await productsApi.getAll()
       let fetchedProducts = data.products || []
 
       // Apply local modifications from localStorage
@@ -91,7 +88,7 @@ const Admin = () => {
       }
 
       // Still call the API (even though it's fake)
-      await updateProduct(productId, updatedData)
+      await productsApi.update(productId, updatedData)
 
       // Store the modification in localStorage for persistence
       const localModifications = JSON.parse(
@@ -134,7 +131,7 @@ const Admin = () => {
     try {
       if (formProduct) {
         // Update existing product (if we add edit via form later)
-        await updateProduct(formProduct.id, productData)
+        await productsApi.update(formProduct.id, productData)
         setProducts(
           products.map((product) =>
             product.id === formProduct.id
@@ -144,7 +141,7 @@ const Admin = () => {
         )
       } else {
         // Create new product
-        await createProduct(productData)
+        await productsApi.create(productData)
 
         // Generate a short, simple ID for the new product
         const shortId = 1000 + newProductCounter

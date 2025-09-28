@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchData } from '../../services/api.service'
+import { productsApi } from '../../services/api.service'
 
 export const useProduct = (id) => {
   const [product, setProduct] = useState(null)
@@ -22,8 +22,8 @@ export const useProduct = (id) => {
           return
         }
 
-        // If not local, fetch from API
-        const data = await fetchData(`products/${id}`)
+        // If not local, fetch from API using the new centralized API
+        const data = await productsApi.getById(id)
         setProduct(data)
       } catch (err) {
         if (parseInt(id) >= 1000) {
