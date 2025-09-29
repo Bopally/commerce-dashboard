@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const ProductTable = ({ products, onProductUpdate }) => {
+const ProductTable = ({ products, onProductUpdate, onProductDelete }) => {
   const [editingProduct, setEditingProduct] = useState(null)
   const [editForm, setEditForm] = useState({ title: '', price: '' })
 
@@ -23,6 +23,18 @@ const ProductTable = ({ products, onProductUpdate }) => {
   const handleCancel = () => {
     setEditingProduct(null)
     setEditForm({ title: '', price: '' })
+  }
+
+  const handleDelete = async (productId) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        await onProductDelete(productId)
+        setEditingProduct(null)
+        setEditForm({ title: '', price: '' })
+      } catch (error) {
+        alert('Failed to delete product. Please try again.')
+      }
+    }
   }
 
   return (
@@ -58,11 +70,19 @@ const ProductTable = ({ products, onProductUpdate }) => {
                 <button
                   onClick={() => handleSave(product.id)}
                   className="save-btn"
+                  title="Save changes"
                 >
-                  Save
+                  ✅
                 </button>
-                <button onClick={handleCancel} className="cancel-btn">
-                  Cancel
+                <button onClick={handleCancel} className="cancel-btn" title="Cancel">
+                  ❌
+                </button>
+                <button
+                  onClick={() => handleDelete(product.id)}
+                  className="delete-btn"
+                  title="Delete product"
+                >
+                  🗑️
                 </button>
               </div>
             </>

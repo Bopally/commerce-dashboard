@@ -22,6 +22,7 @@ const Admin = () => {
     fetchProducts,
     updateProduct,
     createProduct,
+    deleteProduct,
   } = useProductManagement()
 
   const handleAddProduct = () => {
@@ -72,7 +73,11 @@ const Admin = () => {
           )}
 
           {!loading && !error && (
-            <ProductTable products={products} onProductUpdate={updateProduct} />
+            <ProductTable
+              products={products}
+              onProductUpdate={updateProduct}
+              onProductDelete={deleteProduct}
+            />
           )}
         </div>
       </div>

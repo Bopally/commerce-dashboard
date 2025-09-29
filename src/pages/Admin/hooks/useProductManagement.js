@@ -102,6 +102,43 @@ const useProductManagement = () => {
     }
   }
 
+  const deleteProduct = async (productId) => {
+    try {
+      console.log('Attempting to delete product with ID:', productId)
+
+      // Check if this is a locally created product (ID >= 1000)
+      const isLocalProduct = productId >= 1000
+
+      if (!isLocalProduct) {
+        // Only call API for products that exist on the server
+        const result = await productsApi.delete(productId)
+        console.log('Delete API result:', result)
+      } else {
+        console.log('Deleting local product, skipping API call')
+      }
+
+      // Remove from local state regardless of API call result
+      setProducts(products.filter(product => product.id !== productId))
+
+      // Remove from localStorage
+      const localModifications = JSON.parse(
+        localStorage.getItem('productModifications') || '{}'
+      )
+      delete localModifications[productId]
+      localStorage.setItem(
+        'productModifications',
+        JSON.stringify(localModifications)
+      )
+
+      window.dispatchEvent(new CustomEvent('productsUpdated'))
+      console.log('Product deleted successfully')
+    } catch (error) {
+      console.error('Failed to delete product:', error)
+      console.error('Error details:', error.message, error.stack)
+      throw error
+    }
+  }
+
   useEffect(() => {
     fetchProducts()
   }, [])
@@ -113,6 +150,7 @@ const useProductManagement = () => {
     fetchProducts,
     updateProduct,
     createProduct,
+    deleteProduct,
   }
 }
 
