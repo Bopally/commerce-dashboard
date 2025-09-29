@@ -1,0 +1,119 @@
+import { useState, useEffect } from 'react'
+import { productsApi } from '../../../services/api.service'
+
+const useProductManagement = () => {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [newProductCounter, setNewProductCounter] = useState(1)
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true)
+      setError('')
+      const data = await productsApi.getAll()
+      let fetchedProducts = data.products || []
+
+      const localModifications = JSON.parse(
+        localStorage.getItem('productModifications') || '{}'
+      )
+
+      const localProducts = Object.values(localModifications).filter(
+        (product) =>
+          product.id >= 1000 &&
+          !fetchedProducts.find((p) => p.id === product.id)
+      )
+
+      fetchedProducts = fetchedProducts.map((product) => {
+        if (localModifications[product.id]) {
+          return { ...product, ...localModifications[product.id] }
+        }
+        return product
+      })
+
+      fetchedProducts = [...fetchedProducts, ...localProducts]
+
+      const maxLocalId = Math.max(0, ...localProducts.map((p) => p.id))
+      if (maxLocalId >= 1000) {
+        setNewProductCounter(maxLocalId - 1000 + 2)
+      }
+
+      setProducts(fetchedProducts)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const updateProduct = async (productId, updatedData) => {
+    try {
+      await productsApi.update(productId, updatedData)
+
+      const localModifications = JSON.parse(
+        localStorage.getItem('productModifications') || '{}'
+      )
+      localModifications[productId] = updatedData
+      localStorage.setItem(
+        'productModifications',
+        JSON.stringify(localModifications)
+      )
+
+      window.dispatchEvent(new CustomEvent('productsUpdated'))
+
+      setProducts(
+        products.map((product) =>
+          product.id === productId ? { ...product, ...updatedData } : product
+        )
+      )
+    } catch (err) {
+      console.error('Failed to update product:', err)
+    }
+  }
+
+  const createProduct = async (productData) => {
+    try {
+      await productsApi.create(productData)
+
+      const shortId = 1000 + newProductCounter
+      const newProduct = {
+        ...productData,
+        id: shortId,
+        rating: 4.0,
+        stock: productData.stock,
+        discountPercentage: 0,
+      }
+
+      setProducts([...products, newProduct])
+      setNewProductCounter((prev) => prev + 1)
+
+      const localModifications = JSON.parse(
+        localStorage.getItem('productModifications') || '{}'
+      )
+      localModifications[newProduct.id] = newProduct
+      localStorage.setItem(
+        'productModifications',
+        JSON.stringify(localModifications)
+      )
+
+      window.dispatchEvent(new CustomEvent('productsUpdated'))
+    } catch (error) {
+      console.error('Failed to save product:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
+  return {
+    products,
+    loading,
+    error,
+    fetchProducts,
+    updateProduct,
+    createProduct,
+  }
+}
+
+export default useProductManagement

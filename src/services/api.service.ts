@@ -31,21 +31,21 @@ const BASE_URL = 'https://dummyjson.com'
 // API Endpoints
 export const ENDPOINTS = {
   AUTH: {
-    LOGIN: '/auth/login',
+    LOGIN: 'auth/login',
   },
   PRODUCTS: {
-    LIST: '/products',
-    BY_ID: (id: number) => `/products/${id}`,
-    ADD: '/products/add',
-    UPDATE: (id: number) => `/products/${id}`,
-    DELETE: (id: number) => `/products/${id}`,
+    LIST: 'products',
+    BY_ID: (id: number) => `products/${id}`,
+    ADD: 'products/add',
+    UPDATE: (id: number) => `products/${id}`,
+    DELETE: (id: number) => `products/${id}`,
   },
   USERS: {
-    LIST: '/users',
-    BY_ID: (id: number) => `/users/${id}`,
+    LIST: 'users',
+    BY_ID: (id: number) => `users/${id}`,
   },
   CARTS: {
-    USER_CARTS: (userId: number) => `/carts/user/${userId}`,
+    USER_CARTS: (userId: number) => `carts/user/${userId}`,
   },
 } as const
 
@@ -143,7 +143,7 @@ class ApiClient {
   }
 
   private buildUrl(endpoint: string): string {
-    return `${this.baseUrl}${endpoint}`
+    return `${this.baseUrl}/${endpoint}`
   }
 
   private getHeaders(
@@ -280,6 +280,8 @@ export const fetchData = async (endpoint: string) => {
   return apiClient.get(fullEndpoint)
 }
 
-export const loginUser = authApi.login
+export const loginUser = async (username: string, password: string): Promise<LoginResponse> => {
+  return authApi.login({ username, password })
+}
 export const updateProduct = productsApi.update
 export const createProduct = productsApi.create
