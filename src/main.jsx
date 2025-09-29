@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import Header from './pages/Homepage/Header.jsx'
 import { FavoritesProvider } from './contexts/FavoritesContext.jsx'
-import { BrowserRouter, Route, Navigate, Routes } from 'react-router-dom'
+import { HashRouter, Route, Navigate, Routes } from 'react-router-dom'
 import ProductDetails from './pages/Homepage/ProductDetails.jsx'
 import { FavoriteProductDetails } from './pages/Homepage/FavoriteProductDetails.jsx'
 import FavoritesList from './pages/Homepage/FavoritesList.jsx'
@@ -17,7 +17,7 @@ import AdminProtectedRoute from './components/AdminProtectedRoute.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <FavoritesProvider>
         <Routes>
           <Route
@@ -47,6 +47,6 @@ createRoot(document.getElementById('root')).render(
           </Route>
         </Routes>
       </FavoritesProvider>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>
 )
