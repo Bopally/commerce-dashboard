@@ -275,9 +275,7 @@ export const cartsApi = {
 
 // Legacy exports for backward compatibility
 export const fetchData = async (endpoint: string) => {
-  // Ensure endpoint starts with '/' for proper URL construction
-  const fullEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
-  return apiClient.get(fullEndpoint)
+  return apiClient.get(endpoint)
 }
 
 export const loginUser = async (username: string, password: string): Promise<LoginResponse> => {
