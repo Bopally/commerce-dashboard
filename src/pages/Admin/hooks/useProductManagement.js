@@ -48,11 +48,18 @@ const useProductManagement = () => {
 
   const updateProduct = async (productId, updatedData) => {
     try {
-      await api.request(api.endpoints.PRODUCTS.UPDATE(productId), {
-        method: 'PUT',
-        body: updatedData
-      })
+      // Check if this is a locally created product (ID >= 1000)
+      const isLocalProduct = productId >= 1000
 
+      if (!isLocalProduct) {
+        // Only call API for products that exist on the server
+        await api.request(api.endpoints.PRODUCTS.UPDATE(productId), {
+          method: 'PUT',
+          body: updatedData
+        })
+      }
+
+      // Always update localStorage regardless of API call
       const localModifications = JSON.parse(
         localStorage.getItem('productModifications') || '{}'
       )
@@ -64,6 +71,7 @@ const useProductManagement = () => {
 
       window.dispatchEvent(new CustomEvent('productsUpdated'))
 
+      // Update local state
       setProducts(
         products.map((product) =>
           product.id === productId ? { ...product, ...updatedData } : product
