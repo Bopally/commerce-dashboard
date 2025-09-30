@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { usersApi } from '../../services/api.service'
+import { api } from '../../services/api.service'
 import UserCard from './UserCard'
 import {
   LoadingSpinner,
@@ -35,7 +35,7 @@ export const UsersList = () => {
         setUsersLoading(true)
         setUsersError(null)
         // Using the new centralized API
-        const data = await usersApi.getAll()
+        const data = await api.request(api.endpoints.USERS.LIST)
         setUsers(data.users || [])
       } catch (err) {
         setUsersError(err.message)

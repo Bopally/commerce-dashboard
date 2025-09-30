@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { cartsApi } from '../../services/api.service'
+import { api } from '../../services/api.service'
 
 export const useUserCarts = (userId) => {
   const [carts, setCarts] = useState([])
@@ -12,7 +12,7 @@ export const useUserCarts = (userId) => {
         setLoading(true)
         setError(null)
         // Using the new centralized API
-        const data = await cartsApi.getUserCarts(userId)
+        const data = await api.request(api.endpoints.CARTS.USER_CARTS(userId))
         setCarts(data.carts || [])
       } catch (err) {
         setError(err.message)

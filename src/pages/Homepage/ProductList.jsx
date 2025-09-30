@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './ProductList.css'
 import ProductCard from './ProductCard'
-import { productsApi } from '../../services/api.service'
+import { api } from '../../services/api.service'
 import {
   ErrorState,
   EmptyState,
@@ -24,7 +24,7 @@ export const ProductList = () => {
       setLoading(true)
       setError('')
       // Using the new centralized API
-      const data = await productsApi.getAll()
+      const data = await api.request(api.endpoints.PRODUCTS.LIST)
       let fetchedProducts = data.products || []
 
       // Apply local modifications from localStorage (from admin edits)

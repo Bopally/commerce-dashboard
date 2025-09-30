@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { usersApi } from '../../services/api.service'
+import { api } from '../../services/api.service'
 
 export const useUser = (id) => {
   const [user, setUser] = useState(null)
@@ -12,7 +12,7 @@ export const useUser = (id) => {
         setLoading(true)
         setError(null)
         // Using the new centralized API
-        const data = await usersApi.getById(id)
+        const data = await api.request(api.endpoints.USERS.BY_ID(id))
         setUser(data)
       } catch (err) {
         setError(err.message)

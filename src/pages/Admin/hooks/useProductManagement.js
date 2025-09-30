@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { productsApi } from '../../../services/api.service'
+import { api } from '../../../services/api.service'
 
 const useProductManagement = () => {
   const [products, setProducts] = useState([])
@@ -11,7 +11,7 @@ const useProductManagement = () => {
     try {
       setLoading(true)
       setError('')
-      const data = await productsApi.getAll()
+      const data = await api.request(api.endpoints.PRODUCTS.LIST)
       let fetchedProducts = data.products || []
 
       const localModifications = JSON.parse(
@@ -48,7 +48,10 @@ const useProductManagement = () => {
 
   const updateProduct = async (productId, updatedData) => {
     try {
-      await productsApi.update(productId, updatedData)
+      await api.request(api.endpoints.PRODUCTS.UPDATE(productId), {
+        method: 'PUT',
+        body: updatedData
+      })
 
       const localModifications = JSON.parse(
         localStorage.getItem('productModifications') || '{}'
@@ -73,7 +76,10 @@ const useProductManagement = () => {
 
   const createProduct = async (productData) => {
     try {
-      await productsApi.create(productData)
+      await api.request(api.endpoints.PRODUCTS.ADD, {
+        method: 'POST',
+        body: productData
+      })
 
       const shortId = 1000 + newProductCounter
       const newProduct = {
@@ -111,7 +117,9 @@ const useProductManagement = () => {
 
       if (!isLocalProduct) {
         // Only call API for products that exist on the server
-        const result = await productsApi.delete(productId)
+        const result = await api.request(api.endpoints.PRODUCTS.DELETE(productId), {
+          method: 'DELETE'
+        })
         console.log('Delete API result:', result)
       } else {
         console.log('Deleting local product, skipping API call')
