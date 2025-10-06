@@ -53,7 +53,7 @@ function Homepage() {
             </Link>
           )}
         </div>
-        
+
         <div className="nav-right">
           {!isLoggedIn ? (
             <Link to="/auth/login" className="nav-link">
@@ -62,12 +62,13 @@ function Homepage() {
           ) : (
             <>
               {userRole === 'admin' && (
-                <Link to="admin" className="nav-link">
+                <Link to="/admin" className="nav-link">
                   ⚙️ Admin Panel
                 </Link>
               )}
               <button onClick={handleLogout} className="nav-link logout-btn">
-                🔑 Logout ({userName}) - {userRole === 'admin' ? 'Admin' : 'User'}
+                🔑 Logout ({userName}) -{' '}
+                {userRole === 'admin' ? 'Admin' : 'User'}
               </button>
             </>
           )}
